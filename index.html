@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>João Domingos Matola Muconto - CV</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            background: white;
+            min-height: 11in;
+            padding: 0.75in;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e5e5;
+        }
+        
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .title {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+        
+        .contact-info {
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .section {
+            margin-bottom: 1.25rem;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .summary {
+            text-align: justify;
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        .experience-item {
+            margin-bottom: 1rem;
+        }
+        
+        .job-header {
+            margin-bottom: 0.5rem;
+        }
+        
+        .company {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 15px;
+        }
+        
+        .job-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .duration {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .job-description {
+            margin-left: 1rem;
+        }
+        
+        .job-description ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .job-description li {
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1rem;
+            color: #444;
+        }
+        
+        .job-description li:before {
+            content: "●";
+            color: #666;
+            position: absolute;
+            left: 0;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-item {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 6px;
+            border-left: 3px solid #666;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .project-tech {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+        
+        .project-description {
+            font-size: 12px;
+            color: #444;
+            line-height: 1.5;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .skill-category {
+            margin-bottom: 0.75rem;
+        }
+        
+        .skill-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .skill-list {
+            color: #555;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .education-item {
+            margin-bottom: 0.75rem;
+        }
+        
+        .degree {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .institution {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .certification-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .certification-item {
+            font-size: 12px;
+            color: #444;
+            padding: 0.25rem 0;
+        }
+        
+        .references {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .reference-item {
+            font-size: 12px;
+            color: #444;
+        }
+        
+        .reference-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        @media print {
+            body { print-color-adjust: exact; }
+            .container { box-shadow: none; margin: 0; padding: 0.5in; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
+            <div class="title">SOFTWARE ENGINEER (BACKEND, AI & AUTOMATION)</div>
+            <div class="contact-info">
+                <div class="contact-item">📞 +258 850 452 814</div>
+                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE</div>
+                <div class="contact-item">✉️ J.MUCONTO@GMAIL.COM</div>
+                <div class="contact-item">🔗 github.com/jmuconto</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Summary</h2>
+            <div class="summary">
+                Backend-focused software engineer with expertise in building secure, high-performance APIs, database-driven applications, and automation workflows. Skilled in Python (FastAPI, Django), Go, PHP (Laravel), and SQL/NoSQL databases. Experienced with AI integration using Ollama LLM, low-code tools (n8n, Zapier, Botpress), and real-time systems (PocketBase). Strong foundation in cybersecurity, incident management, and process automation. Adept at transforming business needs into scalable backend solutions with modern frontend integration (Tailwind, HTMX).
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Selected Projects (GitHub Available)</h2>
+            <div class="projects-grid">
+                <div class="project-item">
+                    <div class="project-title">Smart Reminder with Multi-Channel Notifications</div>
+                    <div class="project-tech">Python, FastAPI, Ollama LLM, Zapier</div>
+                    <div class="project-description">AI-powered scheduling assistant using Ollama for natural language task creation. Multi-channel delivery (Email, WhatsApp, Webhooks). Integrated Zapier for cross-platform automation.</div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-title">Queue Management & Real-Time Voting System</div>
+                    <div class="project-tech">Go, PocketBase, n8n</div>
+                    <div class="project-description">WebSocket-based real-time voting and queue tracking. PocketBase for instant data updates. Backend process automation with n8n.</div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-title">Fleet Management Platform</div>
+                    <div class="project-tech">PHP, Laravel, Tailwind, HTMX</div>
+                    <div class="project-description">Backend for vehicle tracking, driver logs, and maintenance scheduling. HTMX for interactive server-driven UI.</div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-title">Insurance Broker Management System</div>
+                    <div class="project-tech">Python, Django</div>
+                    <div class="project-description">Full-stack Django application for policy management and claims tracking. Role-based admin dashboards, reporting tools, and client data management.</div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-title">Church Member Management System</div>
+                    <div class="project-tech">Python, Django</div>
+                    <div class="project-description">Membership and followers database and branches and activities tracking.</div>
+                </div>
+                
+                <div class="project-item">
+                    <div class="project-title">Recruiter Bot & Incident Management Automation</div>
+                    <div class="project-tech">Botpress, ServiceNow</div>
+                    <div class="project-description">Automated candidate screening and interview scheduling. Automated workflows for incident resolution and approvals.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="skill-title">Programming & Scripting:</div>
+                    <div class="skill-list">Python, Go, PHP, C#, Ruby, SQL</div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-title">Frameworks:</div>
+                    <div class="skill-list">FastAPI, Django, Flask, Laravel, .NET, Ruby on Rails</div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-title">Databases:</div>
+                    <div class="skill-list">PostgreSQL, SQL Server, SQLite, PocketBase</div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-title">AI & Automation:</div>
+                    <div class="skill-list">Ollama LLM, n8n, Zapier, Botpress, ServiceNow</div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-title">DevOps & Tools:</div>
+                    <div class="skill-list">Docker, Git, GitHub Actions, Nginx</div>
+                </div>
+                
+                <div class="skill-category">
+                    <div class="skill-title">Cybersecurity:</div>
+                    <div class="skill-list">Secure coding, Nmap, Metasploit, Wireshark</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Professional Experience</h2>
+            
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="company">MARRAR, LDA.</div>
+                    <div class="job-title">Software Developer / Systems Analyst | Subcontracted at ABSA Mozambique</div>
+                    <div class="duration">September 2024 – Present</div>
+                </div>
+                <div class="job-description">
+                    <ul>
+                        <li>Supported and enhanced backend integrations with FlowCredit and Flexcube banking systems.</li>
+                        <li>Developed automation scripts in Python and C# for report generation and data synchronisation with banking APIs.</li>
+                        <li>Managed incidents and implemented improvements to ensure service continuity.</li>
+                        <li>Integrated internal systems, optimised SQL queries, and enhanced database performance for financial operations.</li>
+                        <li>Designed IT modernisation plans and implemented customised backend solutions for operational efficiency.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="company">FOSS LABS SERVICE</div>
+                    <div class="job-title">IT Consultant</div>
+                    <div class="duration">September 2023 - September 2024</div>
+                </div>
+                <div class="job-description">
+                    <ul>
+                        <li>Built Django- and FastAPI-based backend systems for institutional portals and LMS platforms.</li>
+                        <li>Integrated ERP (Odoo) modules with custom backend logic.</li>
+                        <li>Designed and optimised database schemas in PostgreSQL and SQLite.</li>
+                        <li>Conducted penetration testing for backend systems in Mozambique, Brazil, and Portugal.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="company">WORLD MESSIANIC CHURCH</div>
+                    <div class="job-title">Missionary</div>
+                    <div class="duration">January 2016 – September 2023</div>
+                </div>
+                <div class="job-description">
+                    <ul>
+                        <li>Led humanitarian and organisational initiatives across Brazil, Angola, South Africa, and Mozambique.</li>
+                        <li>Developed leadership, intercultural communication, and community engagement skills.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-header">
+                    <div class="company">DELIMITE, LDA.</div>
+                    <div class="job-title">Web Developer</div>
+                    <div class="duration">2014 – 2015</div>
+                </div>
+                <div class="job-description">
+                    <ul>
+                        <li>Created backend logic for CMS platforms (Joomla, WordPress, EzPublish).</li>
+                        <li>Installed and secured computer systems.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            <div class="education-item">
+                <div class="degree">POLYTECHNIC UNIVERSITY</div>
+                <div class="institution">Maputo, Mz | Degree in Information Management | 2010 - 2014</div>
+            </div>
+            <div class="education-item">
+                <div class="degree">MESSIANIC COLLEGE</div>
+                <div class="institution">São Paulo, Brazil | Bachelor of Theology | 2016 - 2018</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Certifications</h2>
+            <div class="certification-list">
+                <div class="certification-item">● C# Fundamentals - Free Code Camp / Microsoft</div>
+                <div class="certification-item">● Introduction to Cybersecurity - Cisco Networking Academy</div>
+                <div class="certification-item">● Ethical Hacking - Cisco Networking Academy</div>
+                <div class="certification-item">● Endpoint Security - Cisco Networking Academy</div>
+                <div class="certification-item">● English for IT 1 - Cisco Networking Academy</div>
+                <div class="certification-item">● English for IT 2 - Cisco Networking Academy</div>
+                <div class="certification-item">● Single Day Masterclass with Python - Uniathena</div>
+                <div class="certification-item">● Robotic Process Automation (RPA) - Automation Anywhere University</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Languages</h2>
+            <div class="skill-list">
+                Portuguese (Native) | English (B2 - Fluent) | Japanese (N4 - Basic)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">References</h2>
+            <div class="skill-list" style="text-align: center; font-style: italic; color: #666;">
+                Available upon request
+            </div>
+        </div>
+    </div>
+</body>
+</html>

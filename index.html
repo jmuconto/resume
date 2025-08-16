@@ -407,6 +407,49 @@
             transform: scale(1.1);
         }
         
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .separator {
+            color: #ddd;
+            margin: 0 0.5rem;
+            font-weight: 300;
+        }
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -445,6 +488,7 @@
                 border-radius: 0;
             }
             .print-btn { display: none; }
+            .language-toggle { display: none; }
             .section-content { max-height: none !important; opacity: 1 !important; }
             .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
         }
@@ -452,6 +496,12 @@
 </head>
 <body>
     <button class="print-btn" onclick="window.print()" title="Print CV">🖨️</button>
+    
+    <div class="language-toggle">
+        <button class="lang-btn" onclick="toggleLanguage('pt')">PT</button>
+        <span class="separator">|</span>
+        <button class="lang-btn active" onclick="toggleLanguage('en')">EN</button>
+    </div>
     
     <div class="container">
         <div class="header">
@@ -791,6 +841,20 @@
                 element.classList.remove('expanded');
             } else {
                 element.classList.add('expanded');
+            }
+        }
+        
+        // Language toggle functionality
+        function toggleLanguage(lang) {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            
+            if (lang === 'pt') {
+                // Redirect to Portuguese version
+                window.location.href = 'cv-pt.html'; // ou o link para a versão portuguesa
+                document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
+            } else {
+                document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
             }
         }
         

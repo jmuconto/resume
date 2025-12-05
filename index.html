@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive CV</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom font import for aesthetics */
@@ -50,20 +49,16 @@
 </head>
 <body class="antialiased text-gray-800">
 
-    <!-- Header & Navigation -->
     <header class="bg-white shadow-md sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold gradient-text">Interactive CV</div>
             <nav>
                 <a href="#features" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Features</a>
                 <a href="#demo" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Technology</a>
-                <!-- Link directly to the CV file - TARGET CHANGED TO cv.html -->
-                <a href="cv.html" class="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-full font-medium transition duration-150 shadow-md">View Live Demo CV</a>
-            </nav>
+                </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="py-20 md:py-32 text-center bg-white shadow-inner">
         <div class="max-w-4xl mx-auto px-4">
             <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
@@ -73,49 +68,42 @@
             <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
                 Explore a modern, engaging, and print-optimized web CV experience powered by simple, fast HTMX. Click below to see the demo.
             </p>
-            <!-- TARGET CHANGED TO cv.html -->
-            <a href="cv.html" class="cta-button text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg">
-                View Live Demo CV
-            </a>
-            <div class="mt-8 text-sm text-gray-500 italic">
-                (This demonstration is built on a minimal stack: HTML, HTMX, and Tailwind CSS.)
+            
+            <div class="flex justify-center space-x-4">
+                <a href="cv.html" target="_blank" class="cta-button text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition duration-300">
+                    View Live Demo CV
+                </a>
+                <a href="https://github.com/jmuconto/resume" target="_blank" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow-md hover:bg-gray-300 hover:shadow-lg transition duration-300">
+                    GitHub Project
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features" class="py-16 md:py-24 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Key Features of the Interactive CV</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
                 
-                <!-- Feature 1: Interactive Expandable Sections -->
                 <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
-                    <!-- Updated Icon -->
                     <div class="text-4xl mb-3 feature-icon">💡</div> 
                     <h3 class="text-xl font-semibold mb-2">Interactive Sections</h3>
                     <p class="text-gray-600">Engage instantly with collapsible Experience, Projects, and Skills sections. Click to reveal detail using light-weight HTMX.</p>
                 </div>
                 
-                <!-- Feature 2: Multi-language Toggle (EN/PT) -->
                 <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
-                    <!-- Updated Icon -->
                     <div class="text-4xl mb-3 feature-icon">🌐</div>
                     <h3 class="text-xl font-semibold mb-2">Multi-Language Support</h3>
-                    <p class="text-gray-600">Seamlessly switch between English (EN) and Portuguese (PT) versions of the CV with a clean toggle button.</p>
+                    <p class="text-gray-600">Seamlessly switch between languages of choice with a clean toggle button.</p>
                 </div>
                 
-                <!-- Feature 3: Print-optimized Layout -->
                 <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
-                    <!-- Updated Icon -->
                     <div class="text-4xl mb-3 feature-icon">📄</div>
                     <h3 class="text-xl font-semibold mb-2">Print-Optimized</h3>
                     <p class="text-gray-600">Looks great online, and automatically adjusts layout for a professional, clean hard copy.</p>
                 </div>
                 
-                <!-- Feature 4: Copy-to-clipboard Contact Info -->
                 <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
-                    <!-- Updated Icon -->
                     <div class="text-4xl mb-3 feature-icon">🔗</div>
                     <h3 class="text-xl font-semibold mb-2">Instant Copy Function</h3>
                     <p class="text-gray-600">Allows visitors to instantly copy contact information (email or phone) to their clipboard with one click.</p>
@@ -125,51 +113,64 @@
         </div>
     </section>
 
-    <!-- Technology Section (Arranged) -->
     <section id="demo" class="py-16 md:py-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                
-                <!-- Call to Action to view the demo (Now on the left for desktop) -->
-                <div class="order-1 lg:order-1 bg-indigo-50 p-10 rounded-xl shadow-2xl flex flex-col items-center text-center">
-                    <p class="text-3xl font-bold mb-4 text-gray-800">Ready to see it in action?</p>
-                    <p class="text-gray-600 mb-8">Click below to load the full, interactive curriculum vitae.</p>
-                    <!-- TARGET CHANGED TO cv.html -->
-                    <a href="cv.html" class="cta-button text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg">
-                        Go to CV Demo
-                    </a>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <h2 class="text-4xl font-bold mb-6 gradient-text">Simple, Yet Powerful Technology Stack</h2>
+            <p class="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+                The Interactive CV is built on a modern, minimal stack, prioritizing speed, interactivity, and ease of deployment.
+            </p>
 
-                <!-- Tech Stack & Dependencies (Now on the right for desktop) -->
-                <div class="order-2 lg:order-2">
-                    <h2 class="text-4xl font-bold mb-6 gradient-text">Simple, Yet Powerful Technology Stack</h2>
-                    <p class="text-lg text-gray-600 mb-8">
-                        The Interactive CV is built on a modern, minimal stack, prioritizing speed, interactivity, and ease of deployment.
-                    </p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center text-lg">
-                            <span class="text-indigo-500 font-bold mr-3 text-2xl">⚡</span>
-                            <span class="font-semibold">HTMX:</span> Powering all interactive elements for a server-driven UI feel, eliminating complex JavaScript frameworks.
-                        </li>
-                        <li class="flex items-center text-lg">
-                            <span class="text-indigo-500 font-bold mr-3 text-2xl">🎨</span>
-                            <span class="font-semibold">Tailwind CSS:</span> Rapidly styled for responsive design and visual appeal on all devices.
-                        </li>
-                        <li class="flex items-center text-lg">
-                            <span class="text-indigo-500 font-bold mr-3 text-2xl">🚀</span>
-                            <span class="font-semibold">Minimal Dependencies:</span> No build process required, making it ideal for instant deployment (e.g., GitHub Pages).
-                        </li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="space-y-6 md:space-y-0 md:grid md:grid-cols-3 md:gap-10 max-w-5xl mx-auto text-left">
+                
+                <li class="p-6 bg-white rounded-xl shadow-lg transition duration-300 hover:shadow-xl">
+                    <div class="flex items-start text-lg">
+                        <span class="text-indigo-500 font-bold mr-3 text-2xl flex-shrink-0">⚡</span>
+                        <div>
+                            <p class="mb-1"><strong class="font-semibold">HTMX:</strong></p>
+                            <p class="text-gray-600">Powering all interactive elements for a server-driven UI feel, eliminating complex JavaScript frameworks.</p>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="p-6 bg-white rounded-xl shadow-lg transition duration-300 hover:shadow-xl">
+                    <div class="flex items-start text-lg">
+                        <span class="text-indigo-500 font-bold mr-3 text-2xl flex-shrink-0">🎨</span>
+                        <div>
+                            <p class="mb-1"><strong class="font-semibold">Tailwind CSS:</strong></p>
+                            <p class="text-gray-600">Rapidly styled for responsive design and visual appeal on all devices.</p>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="p-6 bg-white rounded-xl shadow-lg transition duration-300 hover:shadow-xl">
+                    <div class="flex items-start text-lg">
+                        <span class="text-indigo-500 font-bold mr-3 text-2xl flex-shrink-0">🚀</span>
+                        <div>
+                            <p class="mb-1"><strong class="font-semibold">Minimal Dependencies:</strong></p>
+                            <p class="text-gray-600">No build process required, making it ideal for instant deployment (e.g., GitHub Pages).</p>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="py-8 bg-gray-800 text-center text-gray-400">
-        <!-- Improved footer hierarchy -->
-        <p class="text-sm">&copy; 2025 Interactive CV.</p>
+        <p class="text-sm">&copy; <span id="currentYear"></span> Interactive CV.</p>
         <p class="text-xs mt-1 text-gray-500">Built by João Muconto</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                // Define o conteúdo do span para o ano atual
+                yearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
 </body>
 </html>

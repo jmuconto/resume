@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>João Domingos Matola Muconto - CV Interativo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-size: 14px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            background: white;
+            min-height: 11in;
+            padding: 0.75in;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e5e5;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+        
+        .contact-info {
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-2px);
+            color: #667eea;
+        }
+
+        /* NEW: Highlight collapsed section titles */
+        .section-title.collapsed-title {
+            background-color: #f0f3ff;
+            border-radius: 4px;
+            padding-left: 0.5rem;
+        }
+        
+        .section {
+            margin-bottom: 1.25rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+        .section:nth-child(6) { animation-delay: 0.5s; }
+        .section:nth-child(7) { animation-delay: 0.6s; }
+        .section:nth-child(8) { animation-delay: 0.7s; }
+        .section:nth-child(9) { animation-delay: 0.8s; }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .section-title:hover {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .section-title::after {
+            content: '▼';
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 12px;
+            opacity: 0.5;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-content {
+            transition: all 0.3s ease;
+        }
+        
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        
+        .section-content.collapsed + .section-title::after {
+            /* This is the key CSS change for the arrow rotation */
+            transform: rotate(-90deg);
+        }
+
+        .section-content.collapsed + .section-title {
+            border-bottom-color: transparent;
+        }
+        
+        .summary {
+            text-align: justify;
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        .experience-item, .project-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        
+        .experience-item:hover, .project-item:hover {
+            background: #f8f9fa;
+            border-left-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .job-header {
+            margin-bottom: 0.5rem;
+        }
+        
+        .company {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 15px;
+        }
+        
+        .job-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .duration {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .job-description {
+            margin-left: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .experience-item.expanded .job-description,
+        .project-item.expanded .project-description {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 0.5rem;
+        }
+        
+        .job-description ul, .project-description ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .job-description li, .project-description li {
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1rem;
+            color: #444;
+        }
+        
+        .job-description li:before, .project-description li:before {
+            content: "●";
+            color: #667eea;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .project-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-item:hover::before {
+            opacity: 1;
+        }
+        
+        .project-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .project-tech {
+            font-size: 11px;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .project-description {
+            font-size: 12px;
+            color: #444;
+            line-height: 1.5;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .skill-category {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skill-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .skill-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .skill-list {
+            color: #555;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .education-item {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .education-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .degree {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .institution {
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .certification-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .certification-item {
+            font-size: 12px;
+            color: #444;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .certification-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .print-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            min-width: 40px;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .separator {
+            color: #ddd;
+            margin: 0 0.5rem;
+            font-weight: 300;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media print {
+            body { 
+                print-color-adjust: exact;
+                background: white;
+            }
+            .container { 
+                box-shadow: none; 
+                margin: 0; 
+                padding: 0.5in;
+                border-radius: 0;
+            }
+            .print-btn { display: none; }
+            .language-toggle { display: none; }
+            .section-content { max-height: none !important; opacity: 1 !important; }
+            .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()" title="Imprimir CV">🖨️</button>
+    
+    <div class="language-toggle">
+        <button class="lang-btn active" onclick="toggleLanguage('pt')">PT</button>
+        <span class="separator">|</span>
+        <button class="lang-btn" onclick="toggleLanguage('en')">EN</button>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
+            <div class="title">ENGENHEIRO DE SOFTWARE (BACKEND, IA E AUTOMAÇÃO)</div>
+            <div class="contact-info">
+                <div class="contact-item" data-copy="+258850452814">
+                    📞 +258 850 452 814
+                </div>
+                <div class="contact-item">📍 MAPUTO, MOÇAMBIQUE</div>
+                <div class="contact-item" data-copy="j.muconto@gmail.com">
+                    ✉️ J.MUCONTO@GMAIL.COM
+                </div>
+                <div class="contact-item">🔗 github.com/jmuconto</div>
+                <div class="contact-item">✍️ <a href="https://medium.com/@jmuconto" target="_blank" style="text-decoration: none; color: inherit;">medium.com/@jmuconto</a></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Resumo</h2>
+            <div class="section-content">
+                <div class="summary">
+                    <strong>Engenheiro de software com foco em Backend</strong> e experiência em construir APIs seguras e de alto desempenho, aplicações orientadas a bases de dados e fluxos de trabalho de automação. Proficiente em <strong>Python</strong> (FastAPI, Django), <strong>Go</strong>, <strong>PHP</strong> (Laravel) e bases de dados SQL/NoSQL. Experiência com <strong>integração de IA</strong> usando Ollama LLM, ferramentas low-code (n8n, Zapier, Botpress) e sistemas em tempo real (PocketBase). Forte base em cibersegurança, gestão de incidentes e automação de processos. Capaz de transformar necessidades de negócio em soluções de backend escaláveis com integração frontend moderna (Tailwind, HTMX).
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Projetos Selecionados (GitHub Disponível)</h2>
+            <div class="section-content">
+                <div class="projects-grid">
+                    
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Lembrete Inteligente com Notificações Multi-Canal</div>
+                        <div class="project-tech">Python, FastAPI, Ollama LLM, Zapier</div>
+                        <div class="project-description">
+                            <ul>
+                                <li><strong>Assistente de agendamento com IA</strong> usando Ollama para criação de tarefas em linguagem natural.</li>
+                                <li>Implementação de <strong>Entrega Multi-canal</strong> (Email, WhatsApp, Webhooks) para notificações flexíveis.</li>
+                                <li>Integração com <strong>Zapier</strong> para automação multi-plataforma e alcance estendido do sistema.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">CV Interativo (Esta Página)</div>
+                        <div class="project-tech">HTML, CSS, JavaScript, HTMX</div>
+                        <div class="project-description">
+                            <ul>
+                                <li>Construção de uma <strong>UI orientada a servidor</strong> usando HTMX para uma experiência interativa, moderna e leve.</li>
+                                <li>Desenvolvimento de alternadores de seção dinâmicos para <strong>otimizar a escaneabilidade</strong>.</li>
+                                <li>Implementação de <strong>estilos de impressão otimizados</strong> e funcionalidade de copiar para área de transferência.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Sistema de Gestão para Corretores de Seguros</div>
+                        <div class="project-tech">Python, Django</div>
+                        <div class="project-description">
+                            <ul>
+                                <li>Aplicação full-stack em <strong>Django</strong> para gestão abrangente de apólices e rastreamento de sinistros.</li>
+                                <li>Desenvolvimento de <strong>painéis de administração baseados em função</strong> para controlar acesso e visibilidade de dados.</li>
+                                <li>Integração de ferramentas de relatório avançadas para dados de clientes e rastreamento de expiração de apólices.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Habilidades Técnicas</h2>
+            <div class="section-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-title">Programação e Scripting:</div>
+                        <div class="skill-list"><strong>Python</strong>, Go, PHP, C#, Ruby, SQL</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">Frameworks:</div>
+                        <div class="skill-list"><strong>FastAPI</strong>, <strong>Django</strong>, Flask, Laravel, .NET, Ruby on Rails</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">Bases de Dados:</div>
+                        <div class="skill-list"><strong>PostgreSQL</strong>, SQL Server, SQLite, PocketBase</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">IA e Automação:</div>
+                        <div class="skill-list"><strong>Ollama LLM</strong>, <strong>n8n</strong>, <strong>Zapier</strong>, Botpress, ServiceNow</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">DevOps e Ferramentas:</div>
+                        <div class="skill-list"><strong>Docker</strong>, Git, GitHub Actions, Nginx</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">Cibersegurança:</div>
+                        <div class="skill-list">Programação segura, Nmap, Metasploit, Wireshark</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">Habilidades Interpessoais e Transferíveis:</div>
+                        <div class="skill-list"><strong>Produção de Conteúdo</strong>, Liderança, Comunicação Intercultural, ITIL</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Experiência Profissional</h2>
+            <div class="section-content">
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">MARRAR, LDA.</div>
+                        <div class="job-title">Desenvolvedor de Software / Analista de Sistemas </div>
+                        <div class="duration">Setembro 2024 – Presente</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Suporte e melhoria de integrações backend com os sistemas bancários <strong>FlowCredit</strong> e <strong>Flexcube</strong>.</li>
+                            <li>Desenvolvimento de scripts de automação em <strong>Python</strong> e <strong>C#</strong> para geração de relatórios e sincronização de dados com APIs bancárias.</li>
+                            <li>Implementação de fluxos de trabalho de gestão de incidentes <strong>ServiceNow</strong> e processos de pedidos de mudança, garantindo a conformidade com as normas <strong>ITIL</strong>.</li>
+                            <li>Otimização de <strong>consultas SQL</strong> e melhoria do desempenho da base de dados para operações financeiras.</li>
+                            <li>Desenho de planos de modernização de TI e implementação de soluções backend personalizadas para eficiência operacional.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">FOSS LABS SERVICE</div>
+                        <div class="job-title">Consultor de TI</div>
+                        <div class="duration">Setembro 2023 - Setembro 2024</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Construção de sistemas backend baseados em <strong>Django</strong> e <strong>FastAPI</strong> para portais institucionais e plataformas LMS.</li>
+                            <li>Integração de módulos <strong>ERP (Odoo)</strong> com lógica backend customizada.</li>
+                            <li>Desenho e otimização de esquemas de bases de dados em <strong>PostgreSQL</strong> e <strong>SQLite</strong>.</li>
+                            <li>Realização de testes de penetração para sistemas backend em Moçambique, Brasil e Portugal.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">IGREJA MESSIÂNICA MUNDIAL</div>
+                        <div class="job-title">Missionário</div>
+                        <div class="duration">Janeiro 2016 – Setembro 2023</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Liderança de iniciativas humanitárias e organizacionais no Brasil, Angola, África do Sul e Moçambique.</li>
+                            <li>Desenvolvimento de habilidades de liderança, comunicação intercultural e engajamento comunitário.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">DELIMITE, LDA.</div>
+                        <div class="job-title">Desenvolvedor Web</div>
+                        <div class="duration">2014 – 2015</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Criação de lógica backend para plataformas CMS (Joomla, WordPress, EzPublish).</li>
+                            <li>Instalação e segurança de sistemas informáticos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Formação</h2>
+            <div class="section-content">
+                <div class="education-item">
+                    <div class="degree">UNIVERSIDADE POLITÉCNICA</div>
+                    <div class="institution">Maputo, Mz | Licenciatura em Gestão de Informação | 2010 - 2014</div>
+                </div>
+                <div class="education-item">
+                    <div class="degree">COLÉGIO MESSIÂNICO</div>
+                    <div class="institution">São Paulo, Brasil | Bacharelado em Teologia | 2016 - 2018</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Certificações</h2>
+            <div class="section-content">
+                <div class="certification-list">
+                    <div class="certification-item">● C# Fundamentals - Free Code Camp / Microsoft</div>
+                    <div class="certification-item">● Introduction to Cybersecurity - Cisco Networking Academy</div>
+                    <div class="certification-item">● Ethical Hacking - Cisco Networking Academy</div>
+                    <div class="certification-item">● Endpoint Security - Cisco Networking Academy</div>
+                    <div class="certification-item">● English for IT 1 - Cisco Networking Academy</div>
+                    <div class="certification-item">● English for IT 2 - Cisco Networking Academy</div>
+                    <div class="certification-item">● Single Day Masterclass with Python - Uniathena</div>
+                    <div class="certification-item">● Robotic Process Automation (RPA) - Automation Anywhere University</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Idiomas</h2>
+            <div class="section-content">
+                <div class="skill-list">
+                    <strong>Português</strong> (Nativo) | <strong>Inglês</strong> (B2 - Fluente) | Japonês (N4 - Básico)
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Referências</h2>
+            <div class="section-content">
+                <div class="skill-list" style="text-align: center; font-style: italic; color: #666;">
+                    Disponíveis mediante solicitação
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced clipboard functionality (Decoupled from HTML)
+        function copyToClipboard(text, element) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Feedback visual
+                    const originalHTML = element.innerHTML;
+                    element.innerHTML = '✨ Copiado!';
+                    element.style.color = '#667eea'; // Highlight color
+                    element.style.fontWeight = 'bold';
+                    setTimeout(() => {
+                        element.innerHTML = originalHTML;
+                        element.style.color = '';
+                        element.style.fontWeight = '';
+                    }, 1500); // Duração mais curta para feedback rápido
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+            }
+        }
+
+        // Section Toggling (Simplified JS to only toggle class and manage title highlight)
+        function toggleSection(element) {
+            const content = element.nextElementSibling;
+            
+            // Toggle the 'collapsed' class on the content
+            content.classList.toggle('collapsed');
+            
+            // Toggle the 'collapsed-title' class on the title for CSS highlight
+            element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
+        }
+        
+        // Experience Details Toggling
+        function toggleExperienceDetails(element) {
+            const isExpanded = element.classList.contains('expanded');
+            
+            // Close all other expanded items
+            document.querySelectorAll('.experience-item.expanded').forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle current item
+            element.classList.toggle('expanded', !isExpanded);
+        }
+        
+        // Project Details Toggling
+        function toggleProjectDetails(element) {
+            const isExpanded = element.classList.contains('expanded');
+            
+            // Close all other expanded projects
+            document.querySelectorAll('.project-item.expanded').forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('expanded');
+                }
+            });
+            
+            // Toggle current project
+            element.classList.toggle('expanded', !isExpanded);
+        }
+        
+        // Language toggle functionality
+        function toggleLanguage(lang) {
+            // Se clicar em EN, volta para cv.html
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            
+            if (lang === 'en') {
+                window.location.href = 'cv.html';
+            } else {
+                document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Initialize clipboard listeners using data-copy attributes
+            document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
+                item.addEventListener('click', function() {
+                    copyToClipboard(this.getAttribute('data-copy'), this);
+                });
+            });
+
+            // 2. Initialize all sections as collapsed (Better for first impression scan)
+            document.querySelectorAll('.section-content').forEach(content => {
+                 // Keep Summary section open by default
+                if (!content.previousElementSibling.textContent.includes('Resumo')) {
+                    content.classList.add('collapsed');
+                    content.previousElementSibling.classList.add('collapsed-title');
+                }
+            });
+
+            // Ensure Summary is explicitly expanded
+            const summaryContent = document.querySelector('.summary').parentNode;
+            summaryContent.classList.remove('collapsed');
+            summaryContent.previousElementSibling.classList.remove('collapsed-title');
+        });
+    </script>
+</body>
+</html>

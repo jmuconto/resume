@@ -3,892 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - Interactive CV</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
+    <title>Interactive CV</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        /* Custom font import for aesthetics */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #667eea; /* Soft Blue */
+            --secondary: #764ba2; /* Purple */
+            --gradient: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            font-size: 14px;
-            min-height: 100vh;
+            background-color: #f7f9fc;
+            scroll-behavior: smooth;
         }
-        
-        .container {
-            max-width: 8.5in;
-            margin: 0 auto;
-            background: white;
-            min-height: 11in;
-            padding: 0.75in;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            border-radius: 12px;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e5e5e5;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        
-        .name {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-            letter-spacing: 1px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+
+        .gradient-text {
+            background-image: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-fill-color: transparent;
         }
-        
-        .title {
-            font-size: 16px;
-            color: #666;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-        
-        .contact-info {
-            font-size: 13px;
-            color: #555;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
+
+        .cta-button {
+            background: var(--gradient);
             transition: all 0.3s ease;
-            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-        
-        .contact-item:hover {
+
+        .cta-button:hover {
             transform: translateY(-2px);
-            color: #667eea;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .feature-icon {
+            color: var(--secondary);
         }
         
-        .section {
-            margin-bottom: 1.25rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease forwards;
-        }
-        
-        .section:nth-child(2) { animation-delay: 0.1s; }
-        .section:nth-child(3) { animation-delay: 0.2s; }
-        .section:nth-child(4) { animation-delay: 0.3s; }
-        .section:nth-child(5) { animation-delay: 0.4s; }
-        .section:nth-child(6) { animation-delay: 0.5s; }
-        .section:nth-child(7) { animation-delay: 0.6s; }
-        .section:nth-child(8) { animation-delay: 0.7s; }
-        .section:nth-child(9) { animation-delay: 0.8s; }
-        
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.25rem;
-            border-bottom: 1px solid #ddd;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        
-        .section-title:hover {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-        
-        .section-title::after {
-            content: '▼';
-            position: absolute;
-            right: 0;
-            top: 0;
-            font-size: 12px;
-            opacity: 0.5;
-            transition: transform 0.3s ease;
-        }
-        
-        .section-content {
-            transition: all 0.3s ease;
-        }
-        
-        .section-content.collapsed {
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-        }
-        
-        .section-content.collapsed + .section-title::after {
-            transform: rotate(-90deg);
-        }
-        
-        .summary {
-            text-align: justify;
-            color: #444;
-            line-height: 1.7;
-        }
-        
-        .experience-item, .project-item {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-        }
-        
-        .experience-item:hover, .project-item:hover {
-            background: #f8f9fa;
-            border-left-color: #667eea;
-            transform: translateX(5px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .job-header {
-            margin-bottom: 0.5rem;
-        }
-        
-        .company {
-            font-weight: 600;
-            color: #1a1a1a;
-            font-size: 15px;
-        }
-        
-        .job-title {
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
-        
-        .duration {
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-        }
-        
-        .job-description {
-            margin-left: 1rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
-        
-        .experience-item.expanded .job-description,
-        .project-item.expanded .project-description {
-            max-height: 500px;
-            opacity: 1;
-            margin-top: 0.5rem;
-        }
-        
-        .job-description ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .job-description li {
-            margin-bottom: 0.4rem;
-            position: relative;
-            padding-left: 1rem;
-            color: #444;
-        }
-        
-        .job-description li:before {
-            content: "●";
-            color: #667eea;
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-        
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .project-item {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 0.75rem;
-            border-radius: 8px;
-            border-left: 3px solid #667eea;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .project-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .project-item:hover::before {
-            opacity: 1;
-        }
-        
-        .project-title {
-            font-weight: 600;
-            color: #1a1a1a;
-            font-size: 13px;
-            margin-bottom: 0.25rem;
-        }
-        
-        .project-tech {
-            font-size: 11px;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        
-        .project-description {
-            font-size: 12px;
-            color: #444;
-            line-height: 1.5;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        
-        .skill-category {
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .skill-category:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-        }
-        
-        .skill-title {
-            font-weight: 600;
-            color: #333;
-            font-size: 13px;
-            margin-bottom: 0.25rem;
-        }
-        
-        .skill-list {
-            color: #555;
-            font-size: 12px;
-            line-height: 1.5;
-        }
-        
-        .education-item {
-            margin-bottom: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .education-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-        }
-        
-        .degree {
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        
-        .institution {
-            color: #666;
-            font-size: 13px;
-        }
-        
-        .certification-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-        }
-        
-        .certification-item {
-            font-size: 12px;
-            color: #444;
-            padding: 0.5rem;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .certification-item:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: scale(1.02);
-        }
-        
-        .toggle-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-            margin: 0.5rem 0;
-        }
-        
-        .toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
-        .print-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .print-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .language-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
-        
-        .lang-btn {
-            background: none;
-            border: none;
-            font-size: 14px;
-            font-weight: 600;
-            color: #666;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            min-width: 40px;
-        }
-        
-        .lang-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-        }
-        
-        .lang-btn.active {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-        }
-        
-        .separator {
-            color: #ddd;
-            margin: 0 0.5rem;
-            font-weight: 300;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .htmx-request .htmx-indicator {
-            opacity: 1;
-            animation: pulse 1s infinite;
-        }
-        
-        .htmx-indicator {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        @media print {
-            body { 
-                print-color-adjust: exact;
-                background: white;
-            }
-            .container { 
-                box-shadow: none; 
-                margin: 0; 
-                padding: 0.5in;
-                border-radius: 0;
-            }
-            .print-btn { display: none; }
-            .language-toggle { display: none; }
-            .section-content { max-height: none !important; opacity: 1 !important; }
-            .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
-        }
+        /* Custom styles block */
     </style>
 </head>
-<body>
-    <button class="print-btn" onclick="window.print()" title="Print CV">🖨️</button>
-    
-    <div class="language-toggle">
-        <button class="lang-btn" onclick="toggleLanguage('pt')">PT</button>
-        <span class="separator">|</span>
-        <button class="lang-btn active" onclick="toggleLanguage('en')">EN</button>
-    </div>
-    
-    <div class="container">
-        <div class="header">
-            <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
-            <div class="title">SOFTWARE ENGINEER (BACKEND, AI & AUTOMATION)</div>
-            <div class="contact-info">
-                <div class="contact-item" 
-                     hx-get="data:text/plain,Copied!" 
-                     hx-trigger="click"
-                     onclick="navigator.clipboard.writeText('+258850452814')">
-                    📞 +258 850 452 814
-                </div>
-                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE</div>
-                <div class="contact-item" 
-                     hx-get="data:text/plain,Email copied!" 
-                     hx-trigger="click"
-                     onclick="navigator.clipboard.writeText('j.muconto@gmail.com')">
-                    ✉️ J.MUCONTO@GMAIL.COM
-                </div>
-                <div class="contact-item">🔗 github.com/jmuconto</div>
+<body class="antialiased text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold gradient-text">Interactive CV</div>
+            <nav>
+                <a href="#features" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Features</a>
+                <a href="#demo" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Technology</a>
+                <!-- Link directly to the CV file - TARGET CHANGED TO cv.html -->
+                <a href="cv.html" class="text-white bg-indigo-500 hover:bg-indigo-600 px-4 py-2 rounded-full font-medium transition duration-150 shadow-md">View Live Demo CV</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 md:py-32 text-center bg-white shadow-inner">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+                <span class="gradient-text">The Next-Gen</span>
+                <span class="block">Interactive Curriculum Vitae</span>
+            </h1>
+            <p class="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+                Explore a modern, engaging, and print-optimized web CV experience powered by simple, fast HTMX. Click below to see the demo.
+            </p>
+            <!-- TARGET CHANGED TO cv.html -->
+            <a href="cv.html" class="cta-button text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg">
+                View Live Demo CV
+            </a>
+            <div class="mt-8 text-sm text-gray-500 italic">
+                (This demonstration is built on a minimal stack: HTML, HTMX, and Tailwind CSS.)
             </div>
         </div>
+    </section>
 
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Summary</h2>
-            <div class="section-content">
-                <div class="summary">
-                    Backend-focused software engineer with expertise in building secure, high-performance APIs, database-driven applications, and automation workflows. Skilled in Python (FastAPI, Django), Go, PHP (Laravel), and SQL/NoSQL databases. Experienced with AI integration using Ollama LLM, low-code tools (n8n, Zapier, Botpress), and real-time systems (PocketBase). Strong foundation in cybersecurity, incident management, and process automation. Adept at transforming business needs into scalable backend solutions with modern frontend integration (Tailwind, HTMX).
+    <!-- Features Section -->
+    <section id="features" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-16 gradient-text">Key Features of the Interactive CV</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                
+                <!-- Feature 1: Interactive Expandable Sections -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
+                    <!-- Updated Icon -->
+                    <div class="text-4xl mb-3 feature-icon">💡</div> 
+                    <h3 class="text-xl font-semibold mb-2">Interactive Sections</h3>
+                    <p class="text-gray-600">Engage instantly with collapsible Experience, Projects, and Skills sections. Click to reveal detail using light-weight HTMX.</p>
                 </div>
+                
+                <!-- Feature 2: Multi-language Toggle (EN/PT) -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
+                    <!-- Updated Icon -->
+                    <div class="text-4xl mb-3 feature-icon">🌐</div>
+                    <h3 class="text-xl font-semibold mb-2">Multi-Language Support</h3>
+                    <p class="text-gray-600">Seamlessly switch between English (EN) and Portuguese (PT) versions of the CV with a clean toggle button.</p>
+                </div>
+                
+                <!-- Feature 3: Print-optimized Layout -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
+                    <!-- Updated Icon -->
+                    <div class="text-4xl mb-3 feature-icon">📄</div>
+                    <h3 class="text-xl font-semibold mb-2">Print-Optimized</h3>
+                    <p class="text-gray-600">Looks great online, and automatically adjusts layout for a professional, clean hard copy.</p>
+                </div>
+                
+                <!-- Feature 4: Copy-to-clipboard Contact Info -->
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-[1.02]">
+                    <!-- Updated Icon -->
+                    <div class="text-4xl mb-3 feature-icon">🔗</div>
+                    <h3 class="text-xl font-semibold mb-2">Instant Copy Function</h3>
+                    <p class="text-gray-600">Allows visitors to instantly copy contact information (email or phone) to their clipboard with one click.</p>
+                </div>
+
             </div>
         </div>
+    </section>
 
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Selected Projects (GitHub Available)</h2>
-            <div class="section-content">
-                <div class="projects-grid">
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Smart Reminder with Multi-Channel Notifications</div>
-                        <div class="project-tech">Python, FastAPI, Ollama LLM, Zapier</div>
-                        <div class="project-description">AI-powered scheduling assistant using Ollama for natural language task creation. Multi-channel delivery (Email, WhatsApp, Webhooks). Integrated Zapier for cross-platform automation.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Queue Management & Real-Time Voting System</div>
-                        <div class="project-tech">Go, PocketBase, n8n</div>
-                        <div class="project-description">WebSocket-based real-time voting and queue tracking. PocketBase for instant data updates. Backend process automation with n8n.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Fleet Management Platform</div>
-                        <div class="project-tech">PHP, Laravel, Tailwind, HTMX</div>
-                        <div class="project-description">Backend for vehicle tracking, driver logs, and maintenance scheduling. HTMX for interactive server-driven UI.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Insurance Broker Management System</div>
-                        <div class="project-tech">Python, Django</div>
-                        <div class="project-description">Full-stack Django application for policy management and claims tracking. Role-based admin dashboards, reporting tools, and client data management.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Church Member Management System</div>
-                        <div class="project-tech">Python, Django</div>
-                        <div class="project-description">Membership and followers database and branches and activities tracking.</div>
-                    </div>
+    <!-- Technology Section (Arranged) -->
+    <section id="demo" class="py-16 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Call to Action to view the demo (Now on the left for desktop) -->
+                <div class="order-1 lg:order-1 bg-indigo-50 p-10 rounded-xl shadow-2xl flex flex-col items-center text-center">
+                    <p class="text-3xl font-bold mb-4 text-gray-800">Ready to see it in action?</p>
+                    <p class="text-gray-600 mb-8">Click below to load the full, interactive curriculum vitae.</p>
+                    <!-- TARGET CHANGED TO cv.html -->
+                    <a href="cv.html" class="cta-button text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg">
+                        Go to CV Demo
+                    </a>
                 </div>
-            </div>
-        </div>
 
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Technical Skills</h2>
-            <div class="section-content">
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <div class="skill-title">Programming & Scripting:</div>
-                        <div class="skill-list">Python, Go, PHP, C#, Ruby, SQL</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Frameworks:</div>
-                        <div class="skill-list">FastAPI, Django, Flask, Laravel, .NET, Ruby on Rails</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Databases:</div>
-                        <div class="skill-list">PostgreSQL, SQL Server, SQLite, PocketBase</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">AI & Automation:</div>
-                        <div class="skill-list">Ollama LLM, n8n, Zapier, Botpress, ServiceNow</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">DevOps & Tools:</div>
-                        <div class="skill-list">Docker, Git, GitHub Actions, Nginx</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Cybersecurity:</div>
-                        <div class="skill-list">Secure coding, Nmap, Metasploit, Wireshark</div>
-                    </div>
+                <!-- Tech Stack & Dependencies (Now on the right for desktop) -->
+                <div class="order-2 lg:order-2">
+                    <h2 class="text-4xl font-bold mb-6 gradient-text">Simple, Yet Powerful Technology Stack</h2>
+                    <p class="text-lg text-gray-600 mb-8">
+                        The Interactive CV is built on a modern, minimal stack, prioritizing speed, interactivity, and ease of deployment.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-lg">
+                            <span class="text-indigo-500 font-bold mr-3 text-2xl">⚡</span>
+                            <span class="font-semibold">HTMX:</span> Powering all interactive elements for a server-driven UI feel, eliminating complex JavaScript frameworks.
+                        </li>
+                        <li class="flex items-center text-lg">
+                            <span class="text-indigo-500 font-bold mr-3 text-2xl">🎨</span>
+                            <span class="font-semibold">Tailwind CSS:</span> Rapidly styled for responsive design and visual appeal on all devices.
+                        </li>
+                        <li class="flex items-center text-lg">
+                            <span class="text-indigo-500 font-bold mr-3 text-2xl">🚀</span>
+                            <span class="font-semibold">Minimal Dependencies:</span> No build process required, making it ideal for instant deployment (e.g., GitHub Pages).
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Professional Experience</h2>
-            <div class="section-content">
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
-                    <div class="job-header">
-                        <div class="company">MARRAR, LDA.</div>
-                        <div class="job-title">Software Developer / Systems Analyst </div>
-                        <div class="duration">September 2024 – Present</div>
-                    </div>
-                    <div class="job-description">
-                        <ul>
-                            <li>Supported and enhanced backend integrations with FlowCredit and Flexcube banking systems.</li>
-                            <li>Developed automation scripts in Python and C# for report generation and data synchronisation with banking APIs.</li>
-                            <li>Implemented ServiceNow incident management workflows and change request processes for IT operations.</li>
-                            <li>Provided ongoing support for ServiceNow change implementation, ensuring compliance with ITIL standards.</li>
-                            <li>Automated incident resolution processes and streamlined change approval workflows for enhanced operational efficiency.</li>
-                            <li>Integrated internal systems, optimised SQL queries, and enhanced database performance for financial operations.</li>
-                            <li>Designed IT modernisation plans and implemented customised backend solutions for operational efficiency.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
-                    <div class="job-header">
-                        <div class="company">FOSS LABS SERVICE</div>
-                        <div class="job-title">IT Consultant</div>
-                        <div class="duration">September 2023 - September 2024</div>
-                    </div>
-                    <div class="job-description">
-                        <ul>
-                            <li>Built Django- and FastAPI-based backend systems for institutional portals and LMS platforms.</li>
-                            <li>Integrated ERP (Odoo) modules with custom backend logic.</li>
-                            <li>Designed and optimised database schemas in PostgreSQL and SQLite.</li>
-                            <li>Conducted penetration testing for backend systems in Mozambique, Brazil, and Portugal.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
-                    <div class="job-header">
-                        <div class="company">WORLD MESSIANIC CHURCH</div>
-                        <div class="job-title">Missionary</div>
-                        <div class="duration">January 2016 – September 2023</div>
-                    </div>
-                    <div class="job-description">
-                        <ul>
-                            <li>Led humanitarian and organisational initiatives across Brazil, Angola, South Africa, and Mozambique.</li>
-                            <li>Developed leadership, intercultural communication, and community engagement skills.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
-                    <div class="job-header">
-                        <div class="company">DELIMITE, LDA.</div>
-                        <div class="job-title">Web Developer</div>
-                        <div class="duration">2014 – 2015</div>
-                    </div>
-                    <div class="job-description">
-                        <ul>
-                            <li>Created backend logic for CMS platforms (Joomla, WordPress, EzPublish).</li>
-                            <li>Installed and secured computer systems.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Education</h2>
-            <div class="section-content">
-                <div class="education-item">
-                    <div class="degree">POLYTECHNIC UNIVERSITY</div>
-                    <div class="institution">Maputo, Mz | Degree in Information Management | 2010 - 2014</div>
-                </div>
-                <div class="education-item">
-                    <div class="degree">MESSIANIC COLLEGE</div>
-                    <div class="institution">São Paulo, Brazil | Bachelor of Theology | 2016 - 2018</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Certifications</h2>
-            <div class="section-content">
-                <div class="certification-list">
-                    <div class="certification-item">● C# Fundamentals - Free Code Camp / Microsoft</div>
-                    <div class="certification-item">● Introduction to Cybersecurity - Cisco Networking Academy</div>
-                    <div class="certification-item">● Ethical Hacking - Cisco Networking Academy</div>
-                    <div class="certification-item">● Endpoint Security - Cisco Networking Academy</div>
-                    <div class="certification-item">● English for IT 1 - Cisco Networking Academy</div>
-                    <div class="certification-item">● English for IT 2 - Cisco Networking Academy</div>
-                    <div class="certification-item">● Single Day Masterclass with Python - Uniathena</div>
-                    <div class="certification-item">● Robotic Process Automation (RPA) - Automation Anywhere University</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Languages</h2>
-            <div class="section-content">
-                <div class="skill-list">
-                    Portuguese (Native) | English (B2 - Fluent) | Japanese (N4 - Basic)
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">References</h2>
-            <div class="section-content">
-                <div class="skill-list" style="text-align: center; font-style: italic; color: #666;">
-                    Available upon request
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Enhanced interactions with HTMX
-        function toggleSection(element) {
-            const content = element.nextElementSibling;
-            const isCollapsed = content.classList.contains('collapsed');
-            
-            if (isCollapsed) {
-                content.classList.remove('collapsed');
-                element.querySelector('::after') && (element.style.transform = 'rotate(0deg)');
-            } else {
-                content.classList.add('collapsed');
-                element.querySelector('::after') && (element.style.transform = 'rotate(-90deg)');
-            }
-        }
-        
-        function toggleExperienceDetails(element) {
-            const isExpanded = element.classList.contains('expanded');
-            
-            // Close all other expanded items
-            document.querySelectorAll('.experience-item.expanded').forEach(item => {
-                if (item !== element) {
-                    item.classList.remove('expanded');
-                }
-            });
-            
-            // Toggle current item
-            if (isExpanded) {
-                element.classList.remove('expanded');
-            } else {
-                element.classList.add('expanded');
-            }
-        }
-        
-        function toggleProjectDetails(element) {
-            const isExpanded = element.classList.contains('expanded');
-            
-            // Close all other expanded projects
-            document.querySelectorAll('.project-item.expanded').forEach(item => {
-                if (item !== element) {
-                    item.classList.remove('expanded');
-                }
-            });
-            
-            // Toggle current project
-            if (isExpanded) {
-                element.classList.remove('expanded');
-            } else {
-                element.classList.add('expanded');
-            }
-        }
-        
-        // Language toggle functionality
-        function toggleLanguage(lang) {
-            const langButtons = document.querySelectorAll('.lang-btn');
-            langButtons.forEach(btn => btn.classList.remove('active'));
-            
-            if (lang === 'pt') {
-                // Redirect to Portuguese version
-                window.location.href = 'index_pt.html'; // ou o link para a versão portuguesa
-                document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
-            } else {
-                document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
-            }
-        }
-        
-        // Copy to clipboard functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add smooth scrolling
-            document.querySelectorAll('.section-title').forEach(title => {
-                title.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            });
-            
-            // Initialize all sections as expanded
-            document.querySelectorAll('.section-content').forEach(content => {
-                content.classList.remove('collapsed');
-            });
-        });
-        
-        // Enhanced clipboard functionality
-        function copyToClipboard(text, element) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    // Visual feedback
-                    const original = element.innerHTML;
-                    element.innerHTML = '✓ Copied!';
-                    element.style.color = '#667eea';
-                    setTimeout(() => {
-                        element.innerHTML = original;
-                        element.style.color = '';
-                    }, 2000);
-                });
-            }
-        }
-    </script>
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-800 text-center text-gray-400">
+        <!-- Improved footer hierarchy -->
+        <p class="text-sm">&copy; 2025 Interactive CV.</p>
+        <p class="text-xs mt-1 text-gray-500">Built by João Muconto</p>
+    </footer>
 </body>
 </html>

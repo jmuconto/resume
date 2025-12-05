@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - CV</title>
+    <title>João Domingos Matola Muconto - Interactive CV</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -96,6 +96,13 @@
             transform: translateY(-2px);
             color: #667eea;
         }
+
+        /* NEW: Highlight collapsed section titles */
+        .section-title.collapsed-title {
+            background-color: #f0f3ff;
+            border-radius: 4px;
+            padding-left: 0.5rem;
+        }
         
         .section {
             margin-bottom: 1.25rem;
@@ -152,7 +159,12 @@
         }
         
         .section-content.collapsed + .section-title::after {
+            /* This is the key CSS change for the arrow rotation */
             transform: rotate(-90deg);
+        }
+
+        .section-content.collapsed + .section-title {
+            border-bottom-color: transparent;
         }
         
         .summary {
@@ -214,20 +226,20 @@
             margin-top: 0.5rem;
         }
         
-        .job-description ul {
+        .job-description ul, .project-description ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
         
-        .job-description li {
+        .job-description li, .project-description li {
             margin-bottom: 0.4rem;
             position: relative;
             padding-left: 1rem;
             color: #444;
         }
         
-        .job-description li:before {
+        .job-description li:before, .project-description li:before {
             content: "●";
             color: #667eea;
             position: absolute;
@@ -370,23 +382,6 @@
             transform: scale(1.02);
         }
         
-        .toggle-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-            margin: 0.5rem 0;
-        }
-        
-        .toggle-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        
         .print-btn {
             position: fixed;
             top: 20px;
@@ -461,21 +456,6 @@
             }
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        .htmx-request .htmx-indicator {
-            opacity: 1;
-            animation: pulse 1s infinite;
-        }
-        
-        .htmx-indicator {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
         @media print {
             body { 
                 print-color-adjust: exact;
@@ -495,233 +475,186 @@
     </style>
 </head>
 <body>
-    <button class="print-btn" onclick="window.print()" title="Imprimir CV">🖨️</button>
+    <button class="print-btn" onclick="window.print()" title="Print CV">🖨️</button>
     
     <div class="language-toggle">
-        <button class="lang-btn active" onclick="toggleLanguage('pt')">PT</button>
+        <button class="lang-btn" onclick="toggleLanguage('pt')">PT</button>
         <span class="separator">|</span>
-        <button class="lang-btn" onclick="toggleLanguage('en')">EN</button>
+        <button class="lang-btn active" onclick="toggleLanguage('en')">EN</button>
     </div>
     
     <div class="container">
         <div class="header">
             <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
-            <div class="title">ENGENHEIRO DE SOFTWARE (BACKEND, IA & AUTOMAÇÃO)</div>
+            <div class="title">SOFTWARE ENGINEER (BACKEND, AI & AUTOMATION)</div>
             <div class="contact-info">
-                <div class="contact-item" 
-                     hx-get="data:text/plain,Copiado!" 
-                     hx-trigger="click"
-                     onclick="navigator.clipboard.writeText('+258850452814')">
+                <div class="contact-item" data-copy="+258850452814">
                     📞 +258 850 452 814
                 </div>
-                <div class="contact-item">📍 MAPUTO, MOÇAMBIQUE</div>
-                <div class="contact-item" 
-                     hx-get="data:text/plain,Email copiado!" 
-                     hx-trigger="click"
-                     onclick="navigator.clipboard.writeText('j.muconto@gmail.com')">
+                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE</div>
+                <div class="contact-item" data-copy="j.muconto@gmail.com">
                     ✉️ J.MUCONTO@GMAIL.COM
                 </div>
                 <div class="contact-item">🔗 github.com/jmuconto</div>
+                <div class="contact-item">✍️ <a href="https://medium.com/@jmuconto" target="_blank" style="text-decoration: none; color: inherit;">medium.com/@jmuconto</a></div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Resumo</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Summary</h2>
             <div class="section-content">
                 <div class="summary">
-                    Engenheiro de software especializado em backend com experiência em construção de APIs seguras, aplicações orientadas a banco de dados e fluxos de automação de alto desempenho. Hábil em Python (FastAPI, Django), Go, PHP (Laravel), e bancos SQL/NoSQL. Experiência com integração de IA usando Ollama LLM, ferramentas low-code (n8n, Zapier, Botpress), e sistemas em tempo real (PocketBase). Forte base em cibersegurança, gestão de incidentes e automação de processos. Especialista em transformar necessidades de negócio em soluções backend escaláveis com integração frontend moderna (Tailwind, HTMX).
+                    <strong>Backend-focused software engineer</strong> with expertise in building secure, high-performance APIs, database-driven applications, and automation workflows. Skilled in <strong>Python</strong> (FastAPI, Django), <strong>Go</strong>, <strong>PHP</strong> (Laravel), and SQL/NoSQL databases. Experienced with <strong>AI integration</strong> using Ollama LLM, low-code tools (n8n, Zapier, Botpress), and real-time systems (PocketBase). Strong foundation in cybersecurity, incident management, and process automation. Adept at transforming business needs into scalable backend solutions with modern frontend integration (Tailwind, HTMX).
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Projectos Selecionados (Disponível no GitHub)</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Selected Projects (GitHub Available)</h2>
             <div class="section-content">
                 <div class="projects-grid">
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Smart Reminder com Notificações Multi-Canal</div>
+                    
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Smart Reminder with Multi-Channel Notifications</div>
                         <div class="project-tech">Python, FastAPI, Ollama LLM, Zapier</div>
-                        <div class="project-description">Assistente de agendamento com IA usando Ollama para criação de tarefas em linguagem natural. Entrega multi-canal (Email, WhatsApp, Webhooks). Integração com Zapier para automação cross-platform.</div>
+                        <div class="project-description">
+                            <ul>
+                                <li><strong>AI-powered scheduling assistant</strong> using Ollama for natural language task creation.</li>
+                                <li>Implemented <strong>Multi-channel delivery</strong> (Email, WhatsApp, Webhooks) for flexible user notifications.</li>
+                                <li>Integrated <strong>Zapier</strong> for cross-platform automation and extended system reach.</li>
+                            </ul>
+                        </div>
                     </div>
                     
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Sistema de Gestão de Filas & Votação em Tempo Real</div>
-                        <div class="project-tech">Go, PocketBase, n8n</div>
-                        <div class="project-description">Votação baseada em WebSocket e rastreamento de filas em tempo real. PocketBase para atualizações instantâneas de dados. Automação de processos backend com n8n.</div>
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Interactive CV (This Page)</div>
+                        <div class="project-tech">HTML, CSS, JavaScript, HTMX</div>
+                        <div class="project-description">
+                            <ul>
+                                <li>Built a <strong>server-driven UI</strong> using HTMX for a modern, lightweight, interactive experience.</li>
+                                <li>Developed dynamic section toggles and detail views for <strong>enhanced scannability</strong>.</li>
+                                <li>Implemented <strong>optimized print styles</strong> and clipboard functionality for recruiter convenience.</li>
+                            </ul>
+                        </div>
                     </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Plataforma de Gestão de Frotas</div>
-                        <div class="project-tech">PHP, Laravel, Tailwind, HTMX</div>
-                        <div class="project-description">Backend para rastreamento de veículos, registos de condutores e agendamento de manutenção. HTMX para UI interativa orientada ao servidor.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Sistema de Gestão de Corretora de Seguros</div>
+
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Insurance Broker Management System</div>
                         <div class="project-tech">Python, Django</div>
-                        <div class="project-description">Aplicação Django full-stack para gestão de apólices e rastreamento de sinistros. Dashboards administrativos baseados em funções, ferramentas de relatórios e gestão de dados de clientes.</div>
-                    </div>
-                    
-                    <div class="project-item" 
-                         hx-get="#" 
-                         hx-trigger="click" 
-                         hx-swap="none"
-                         onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Sistema de Gestão de Membros da Igreja</div>
-                        <div class="project-tech">Python, Django</div>
-                        <div class="project-description">Base de dados de membros e seguidores e rastreamento de ramos e atividades.</div>
+                        <div class="project-description">
+                            <ul>
+                                <li>Full-stack <strong>Django application</strong> for comprehensive policy management and claims tracking.</li>
+                                <li>Developed <strong>Role-based admin dashboards</strong> to control access and data visibility.</li>
+                                <li>Integrated advanced reporting tools for client data and policy expiration tracking.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Competências Técnicas</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Technical Skills</h2>
             <div class="section-content">
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <div class="skill-title">Programação & Scripting:</div>
-                        <div class="skill-list">Python, Go, PHP, C#, Ruby, SQL</div>
+                        <div class="skill-title">Programming & Scripting:</div>
+                        <div class="skill-list"><strong>Python</strong>, Go, PHP, C#, Ruby, SQL</div>
                     </div>
                     
                     <div class="skill-category">
                         <div class="skill-title">Frameworks:</div>
-                        <div class="skill-list">FastAPI, Django, Flask, Laravel, .NET, Ruby on Rails</div>
+                        <div class="skill-list"><strong>FastAPI</strong>, <strong>Django</strong>, Flask, Laravel, .NET, Ruby on Rails</div>
                     </div>
                     
                     <div class="skill-category">
-                        <div class="skill-title">Bases de Dados:</div>
-                        <div class="skill-list">PostgreSQL, SQL Server, SQLite, PocketBase</div>
+                        <div class="skill-title">Databases:</div>
+                        <div class="skill-list"><strong>PostgreSQL</strong>, SQL Server, SQLite, PocketBase</div>
                     </div>
                     
                     <div class="skill-category">
-                        <div class="skill-title">IA & Automação:</div>
-                        <div class="skill-list">Ollama LLM, n8n, Zapier, Botpress, ServiceNow</div>
+                        <div class="skill-title">AI & Automation:</div>
+                        <div class="skill-list"><strong>Ollama LLM</strong>, <strong>n8n</strong>, <strong>Zapier</strong>, Botpress, ServiceNow</div>
                     </div>
                     
                     <div class="skill-category">
-                        <div class="skill-title">DevOps & Ferramentas:</div>
-                        <div class="skill-list">Docker, Git, GitHub Actions, Nginx</div>
+                        <div class="skill-title">DevOps & Tools:</div>
+                        <div class="skill-list"><strong>Docker</strong>, Git, GitHub Actions, Nginx</div>
                     </div>
                     
                     <div class="skill-category">
-                        <div class="skill-title">Cibersegurança:</div>
-                        <div class="skill-list">Programação segura, Nmap, Metasploit, Wireshark</div>
+                        <div class="skill-title">Cybersecurity:</div>
+                        <div class="skill-list">Secure coding, Nmap, Metasploit, Wireshark</div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <div class="skill-title">Soft & Transferable Skills:</div>
+                        <div class="skill-list"><strong>Content Writing</strong>, Leadership, Intercultural Communication, ITIL</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Experiência Profissional</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Professional Experience</h2>
             <div class="section-content">
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
                         <div class="company">MARRAR, LDA.</div>
-                        <div class="job-title">Desenvolvedor de Software / Analista de Sistemas</div>
-                        <div class="duration">Setembro 2024 – Presente</div>
+                        <div class="job-title">Software Developer / Systems Analyst </div>
+                        <div class="duration">September 2024 – Present</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Apoiei e melhorei integrações backend com sistemas bancários FlowCredit e Flexcube.</li>
-                            <li>Desenvolvi scripts de automação em Python e C# para geração de relatórios e sincronização de dados com APIs bancárias.</li>
-                            <li>Implementei fluxos de gestão de incidentes ServiceNow e processos de pedidos de mudança para operações de TI.</li>
-                            <li>Forneci apoio contínuo para implementação de mudanças ServiceNow, garantindo conformidade com padrões ITIL.</li>
-                            <li>Automatizei processos de resolução de incidentes e simplifiquei fluxos de aprovação de mudanças para maior eficiência operacional.</li>
-                            <li>Integrei sistemas internos, otimizei consultas SQL e melhorei performance de bases de dados para operações financeiras.</li>
-                            <li>Elaborei planos de modernização de TI e implementei soluções backend personalizadas para eficiência operacional.</li>
+                            <li>Supported and enhanced backend integrations with <strong>FlowCredit</strong> and <strong>Flexcube</strong> banking systems.</li>
+                            <li>Developed automation scripts in <strong>Python</strong> and <strong>C#</strong> for report generation and data synchronisation with banking APIs.</li>
+                            <li>Implemented <strong>ServiceNow</strong> incident management workflows and change request processes, ensuring <strong>ITIL</strong> standards compliance.</li>
+                            <li>Optimised <strong>SQL queries</strong> and enhanced database performance for financial operations.</li>
+                            <li>Designed IT modernisation plans and implemented customised backend solutions for operational efficiency.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
                         <div class="company">FOSS LABS SERVICE</div>
-                        <div class="job-title">Consultor de TI</div>
-                        <div class="duration">Setembro 2023 - Setembro 2024</div>
+                        <div class="job-title">IT Consultant</div>
+                        <div class="duration">September 2023 - September 2024</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Construí sistemas backend baseados em Django e FastAPI para portais institucionais e plataformas LMS.</li>
-                            <li>Integrei módulos ERP (Odoo) com lógica backend personalizada.</li>
-                            <li>Elaborei e otimizei esquemas de bases de dados em PostgreSQL e SQLite.</li>
-                            <li>Conduzi testes de penetração para sistemas backend em Moçambique, Brasil e Portugal.</li>
+                            <li>Built <strong>Django</strong>- and <strong>FastAPI</strong>-based backend systems for institutional portals and LMS platforms.</li>
+                            <li>Integrated <strong>ERP (Odoo)</strong> modules with custom backend logic.</li>
+                            <li>Designed and optimised database schemas in <strong>PostgreSQL</strong> and <strong>SQLite</strong>.</li>
+                            <li>Conducted penetration testing for backend systems in Mozambique, Brazil, and Portugal.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">IGREJA MESSIÂNICA MUNDIAL</div>
-                        <div class="job-title">Missionário</div>
-                        <div class="duration">Janeiro 2016 – Setembro 2023</div>
+                        <div class="company">WORLD MESSIANIC CHURCH</div>
+                        <div class="job-title">Missionary</div>
+                        <div class="duration">January 2016 – September 2023</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Liderei iniciativas humanitárias e organizacionais no Brasil, Angola, África do Sul e Moçambique.</li>
-                            <li>Desenvolvi competências de liderança, comunicação intercultural e envolvimento comunitário.</li>
+                            <li>Led humanitarian and organisational initiatives across Brazil, Angola, South Africa, and Mozambique.</li>
+                            <li>Developed leadership, intercultural communication, and community engagement skills.</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="experience-item" 
-                     hx-get="#" 
-                     hx-trigger="click" 
-                     hx-swap="none"
-                     onclick="toggleExperienceDetails(this)">
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
                         <div class="company">DELIMITE, LDA.</div>
-                        <div class="job-title">Desenvolvedor Web</div>
+                        <div class="job-title">Web Developer</div>
                         <div class="duration">2014 – 2015</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Criei lógica backend para plataformas CMS (Joomla, WordPress, EzPublish).</li>
-                            <li>Instalei e protegi sistemas informáticos.</li>
+                            <li>Created backend logic for CMS platforms (Joomla, WordPress, EzPublish).</li>
+                            <li>Installed and secured computer systems.</li>
                         </ul>
                     </div>
                 </div>
@@ -729,99 +662,87 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Formação</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Education</h2>
             <div class="section-content">
                 <div class="education-item">
-                    <div class="degree">UNIVERSIDADE POLITÉCNICA</div>
-                    <div class="institution">Maputo, Mz | Licenciatura em Gestão de Informação | 2010 - 2014</div>
+                    <div class="degree">POLYTECHNIC UNIVERSITY</div>
+                    <div class="institution">Maputo, Mz | Degree in Information Management | 2010 - 2014</div>
                 </div>
                 <div class="education-item">
-                    <div class="degree">COLÉGIO MESSIÂNICO</div>
-                    <div class="institution">São Paulo, Brasil | Licenciatura em Teologia | 2016 - 2018</div>
+                    <div class="degree">MESSIANIC COLLEGE</div>
+                    <div class="institution">São Paulo, Brazil | Bachelor of Theology | 2016 - 2018</div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Certificações</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Certifications</h2>
             <div class="section-content">
                 <div class="certification-list">
-                    <div class="certification-item">● Fundamentos C# - Free Code Camp / Microsoft</div>
-                    <div class="certification-item">● Introdução à Cibersegurança - Cisco Networking Academy</div>
-                    <div class="certification-item">● Hacking Ético - Cisco Networking Academy</div>
-                    <div class="certification-item">● Segurança de Endpoint - Cisco Networking Academy</div>
-                    <div class="certification-item">● Inglês para TI 1 - Cisco Networking Academy</div>
-                    <div class="certification-item">● Inglês para TI 2 - Cisco Networking Academy</div>
-                    <div class="certification-item">● Masterclass Python - Uniathena</div>
-                    <div class="certification-item">● Automação de Processos Robóticos (RPA) - Automation Anywhere University</div>
+                    <div class="certification-item">● C# Fundamentals - Free Code Camp / Microsoft</div>
+                    <div class="certification-item">● Introduction to Cybersecurity - Cisco Networking Academy</div>
+                    <div class="certification-item">● Ethical Hacking - Cisco Networking Academy</div>
+                    <div class="certification-item">● Endpoint Security - Cisco Networking Academy</div>
+                    <div class="certification-item">● English for IT 1 - Cisco Networking Academy</div>
+                    <div class="certification-item">● English for IT 2 - Cisco Networking Academy</div>
+                    <div class="certification-item">● Single Day Masterclass with Python - Uniathena</div>
+                    <div class="certification-item">● Robotic Process Automation (RPA) - Automation Anywhere University</div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Idiomas</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Languages</h2>
             <div class="section-content">
                 <div class="skill-list">
-                    Português (Nativo) | Inglês (B2 - Fluente) | Japonês (N4 - Básico)
+                    <strong>Portuguese</strong> (Native) | <strong>English</strong> (B2 - Fluent) | Japanese (N4 - Basic)
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" 
-                hx-get="#" 
-                hx-trigger="click" 
-                hx-swap="none"
-                onclick="toggleSection(this)">Referências</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">References</h2>
             <div class="section-content">
                 <div class="skill-list" style="text-align: center; font-style: italic; color: #666;">
-                    Disponíveis mediante solicitação
+                    Available upon request
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Language toggle functionality
-        function toggleLanguage(lang) {
-            const langButtons = document.querySelectorAll('.lang-btn');
-            langButtons.forEach(btn => btn.classList.remove('active'));
-            
-            if (lang === 'en') {
-                // Redirect to English version
-                window.location.href = 'index.html';
-                document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
-            } else {
-                document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
+        // Enhanced clipboard functionality (Decoupled from HTML)
+        function copyToClipboard(text, element) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Visual feedback
+                    const originalHTML = element.innerHTML;
+                    element.innerHTML = '✨ Copied!';
+                    element.style.color = '#667eea'; // Highlight color
+                    element.style.fontWeight = 'bold';
+                    setTimeout(() => {
+                        element.innerHTML = originalHTML;
+                        element.style.color = '';
+                        element.style.fontWeight = '';
+                    }, 1500); // Shorter duration for quick feedback
+                }).catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
             }
         }
-        
-        // Enhanced interactions with HTMX
+
+        // Section Toggling (Simplified JS to only toggle class and manage title highlight)
         function toggleSection(element) {
             const content = element.nextElementSibling;
-            const isCollapsed = content.classList.contains('collapsed');
             
-            if (isCollapsed) {
-                content.classList.remove('collapsed');
-                element.querySelector('::after') && (element.style.transform = 'rotate(0deg)');
-            } else {
-                content.classList.add('collapsed');
-                element.querySelector('::after') && (element.style.transform = 'rotate(-90deg)');
-            }
+            // Toggle the 'collapsed' class on the content
+            content.classList.toggle('collapsed');
+            
+            // Toggle the 'collapsed-title' class on the title for CSS highlight
+            element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
         }
         
+        // Experience Details Toggling
         function toggleExperienceDetails(element) {
             const isExpanded = element.classList.contains('expanded');
             
@@ -833,13 +754,10 @@
             });
             
             // Toggle current item
-            if (isExpanded) {
-                element.classList.remove('expanded');
-            } else {
-                element.classList.add('expanded');
-            }
+            element.classList.toggle('expanded', !isExpanded);
         }
         
+        // Project Details Toggling
         function toggleProjectDetails(element) {
             const isExpanded = element.classList.contains('expanded');
             
@@ -851,44 +769,44 @@
             });
             
             // Toggle current project
-            if (isExpanded) {
-                element.classList.remove('expanded');
-            } else {
-                element.classList.add('expanded');
-            }
+            element.classList.toggle('expanded', !isExpanded);
         }
         
-        // Copy to clipboard functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add smooth scrolling
-            document.querySelectorAll('.section-title').forEach(title => {
-                title.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
-            });
+        // Language toggle functionality
+        function toggleLanguage(lang) {
+            // Note: This requires a separate cv_pt.html file to exist
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => btn.classList.remove('active'));
             
-            // Initialize all sections as expanded
-            document.querySelectorAll('.section-content').forEach(content => {
-                content.classList.remove('collapsed');
-            });
-        });
-        
-        // Enhanced clipboard functionality
-        function copyToClipboard(text, element) {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    // Visual feedback
-                    const original = element.innerHTML;
-                    element.innerHTML = '✓ Copiado!';
-                    element.style.color = '#667eea';
-                    setTimeout(() => {
-                        element.innerHTML = original;
-                        element.style.color = '';
-                    }, 2000);
-                });
+            if (lang === 'pt') {
+                window.location.href = 'cv_pt.html';
+            } else {
+                document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Initialize clipboard listeners using data-copy attributes
+            document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
+                item.addEventListener('click', function() {
+                    copyToClipboard(this.getAttribute('data-copy'), this);
+                });
+            });
+
+            // 2. Initialize all sections as collapsed (Better for first impression scan)
+            document.querySelectorAll('.section-content').forEach(content => {
+                 // Keep Summary section open by default
+                if (!content.previousElementSibling.textContent.includes('Summary')) {
+                    content.classList.add('collapsed');
+                    content.previousElementSibling.classList.add('collapsed-title');
+                }
+            });
+
+            // Ensure Summary is explicitly expanded
+            const summaryContent = document.querySelector('.summary').parentNode;
+            summaryContent.classList.remove('collapsed');
+            summaryContent.previousElementSibling.classList.remove('collapsed-title');
+        });
     </script>
 </body>
 </html>

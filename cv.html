@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - Interactive CV</title>
+    <title>João Domingos Matola Muconto - Solutions Engineer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -97,7 +97,6 @@
             color: #667eea;
         }
 
-        /* NEW: Highlight collapsed section titles */
         .section-title.collapsed-title {
             background-color: #f0f3ff;
             border-radius: 4px;
@@ -117,7 +116,6 @@
         .section:nth-child(6) { animation-delay: 0.5s; }
         .section:nth-child(7) { animation-delay: 0.6s; }
         .section:nth-child(8) { animation-delay: 0.7s; }
-        .section:nth-child(9) { animation-delay: 0.8s; }
         
         .section-title {
             font-size: 16px;
@@ -159,7 +157,6 @@
         }
         
         .section-content.collapsed + .section-title::after {
-            /* This is the key CSS change for the arrow rotation */
             transform: rotate(-90deg);
         }
 
@@ -221,7 +218,7 @@
         
         .experience-item.expanded .job-description,
         .project-item.expanded .project-description {
-            max-height: 500px;
+            max-height: 800px;
             opacity: 1;
             margin-top: 0.5rem;
         }
@@ -263,22 +260,6 @@
             overflow: hidden;
         }
         
-        .project-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .project-item:hover::before {
-            opacity: 1;
-        }
-        
         .project-title {
             font-weight: 600;
             color: #1a1a1a;
@@ -291,16 +272,6 @@
             color: #667eea;
             margin-bottom: 0.5rem;
             font-weight: 500;
-        }
-        
-        .project-description {
-            font-size: 12px;
-            color: #444;
-            line-height: 1.5;
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
         }
         
         .skills-grid {
@@ -377,7 +348,7 @@
         }
         
         .certification-item:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             transform: scale(1.02);
         }
@@ -394,12 +365,7 @@
             cursor: pointer;
             font-size: 18px;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
             z-index: 1000;
-        }
-        
-        .print-btn:hover {
-            transform: scale(1.1);
         }
         
         .language-toggle {
@@ -426,12 +392,6 @@
             padding: 0.5rem;
             border-radius: 15px;
             transition: all 0.3s ease;
-            min-width: 40px;
-        }
-        
-        .lang-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
         }
         
         .lang-btn.active {
@@ -439,38 +399,16 @@
             color: white;
         }
         
-        .separator {
-            color: #ddd;
-            margin: 0 0.5rem;
-            font-weight: 300;
-        }
-        
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @media print {
-            body { 
-                print-color-adjust: exact;
-                background: white;
-            }
-            .container { 
-                box-shadow: none; 
-                margin: 0; 
-                padding: 0.5in;
-                border-radius: 0;
-            }
-            .print-btn { display: none; }
-            .language-toggle { display: none; }
-            .section-content { max-height: none !important; opacity: 1 !important; }
-            .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
+            body { print-color-adjust: exact; background: white; }
+            .container { box-shadow: none; margin: 0; padding: 0.5in; border-radius: 0; }
+            .print-btn, .language-toggle { display: none; }
+            .section-content, .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
         }
     </style>
 </head>
@@ -479,24 +417,20 @@
     
     <div class="language-toggle">
         <button class="lang-btn" onclick="toggleLanguage('pt')">PT</button>
-        <span class="separator">|</span>
+        <span style="margin: 0 0.5rem; color: #ddd;">|</span>
         <button class="lang-btn active" onclick="toggleLanguage('en')">EN</button>
     </div>
     
     <div class="container">
         <div class="header">
             <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
-            <div class="title">SOFTWARE ENGINEER (BACKEND, AI & AUTOMATION)</div>
+            <div class="title">SOLUTIONS ENGINEER</div>
             <div class="contact-info">
-                <div class="contact-item" data-copy="+258850452814">
-                    📞 +258 850 452 814
-                </div>
-                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE</div>
-                <div class="contact-item" data-copy="j.muconto@gmail.com">
-                    ✉️ J.MUCONTO@GMAIL.COM
-                </div>
+                <div class="contact-item" data-copy="+258850452814">📞 +258 850 452 814</div>
+                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE (REMOTE – UTC+2)</div>
+                <div class="contact-item" data-copy="j.muconto@gmail.com">✉️ J.MUCONTO@GMAIL.COM</div>
                 <div class="contact-item">🔗 github.com/jmuconto</div>
-                <div class="contact-item">✍️ <a href="https://medium.com/@jmuconto" target="_blank" style="text-decoration: none; color: inherit;">medium.com/@jmuconto</a></div>
+                <div class="contact-item">✍️ <a href="https://jmuconto.medium.com" target="_blank" style="text-decoration: none; color: inherit;">jmuconto.medium.com</a></div>
             </div>
         </div>
 
@@ -504,93 +438,7 @@
             <h2 class="section-title" onclick="toggleSection(this)">Summary</h2>
             <div class="section-content">
                 <div class="summary">
-                    <strong>Backend-focused software engineer</strong> with expertise in building secure, high-performance APIs, database-driven applications, and automation workflows. Skilled in <strong>Python</strong> (FastAPI, Django), <strong>Go</strong>, <strong>PHP</strong> (Laravel), and SQL/NoSQL databases. Experienced with <strong>AI integration</strong> using Ollama LLM, low-code tools (n8n, Zapier, Botpress), and real-time systems (PocketBase). Strong foundation in cybersecurity, incident management, and process automation. Adept at transforming business needs into scalable backend solutions with modern frontend integration (Tailwind, HTMX).
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Selected Projects (GitHub Available)</h2>
-            <div class="section-content">
-                <div class="projects-grid">
-                    
-                    <div class="project-item" onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Smart Reminder with Multi-Channel Notifications</div>
-                        <div class="project-tech">Python, FastAPI, Ollama LLM, Zapier</div>
-                        <div class="project-description">
-                            <ul>
-                                <li><strong>AI-powered scheduling assistant</strong> using Ollama for natural language task creation.</li>
-                                <li>Implemented <strong>Multi-channel delivery</strong> (Email, WhatsApp, Webhooks) for flexible user notifications.</li>
-                                <li>Integrated <strong>Zapier</strong> for cross-platform automation and extended system reach.</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="project-item" onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Interactive CV (This Page)</div>
-                        <div class="project-tech">HTML, CSS, JavaScript, HTMX</div>
-                        <div class="project-description">
-                            <ul>
-                                <li>Built a <strong>server-driven UI</strong> using HTMX for a modern, lightweight, interactive experience.</li>
-                                <li>Developed dynamic section toggles and detail views for <strong>enhanced scannability</strong>.</li>
-                                <li>Implemented <strong>optimized print styles</strong> and clipboard functionality for recruiter convenience.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="project-item" onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Insurance Broker Management System</div>
-                        <div class="project-tech">Python, Django</div>
-                        <div class="project-description">
-                            <ul>
-                                <li>Full-stack <strong>Django application</strong> for comprehensive policy management and claims tracking.</li>
-                                <li>Developed <strong>Role-based admin dashboards</strong> to control access and data visibility.</li>
-                                <li>Integrated advanced reporting tools for client data and policy expiration tracking.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Technical Skills</h2>
-            <div class="section-content">
-                <div class="skills-grid">
-                    <div class="skill-category">
-                        <div class="skill-title">Programming & Scripting:</div>
-                        <div class="skill-list"><strong>Python</strong>, Go, PHP, C#, Ruby, SQL</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Frameworks:</div>
-                        <div class="skill-list"><strong>FastAPI</strong>, <strong>Django</strong>, Flask, Laravel, .NET, Ruby on Rails</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Databases:</div>
-                        <div class="skill-list"><strong>PostgreSQL</strong>, SQL Server, SQLite, PocketBase</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">AI & Automation:</div>
-                        <div class="skill-list"><strong>Ollama LLM</strong>, <strong>n8n</strong>, <strong>Zapier</strong>, Botpress, ServiceNow</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">DevOps & Tools:</div>
-                        <div class="skill-list"><strong>Docker</strong>, Git, GitHub Actions, Nginx</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Cybersecurity:</div>
-                        <div class="skill-list">Secure coding, Nmap, Metasploit, Wireshark</div>
-                    </div>
-                    
-                    <div class="skill-category">
-                        <div class="skill-title">Soft & Transferable Skills:</div>
-                        <div class="skill-list"><strong>Content Writing</strong>, Leadership, Intercultural Communication, ITIL</div>
-                    </div>
+                    <strong>Solution engineer</strong> experienced in banking and enterprise systems, specializing in <strong>incident management</strong>, system integration, automation, and controlled change delivery. Adept at transforming complex business requirements into scalable technical solutions while maintaining high standards of security and operational efficiency.
                 </div>
             </div>
         </div>
@@ -598,19 +446,20 @@
         <div class="section">
             <h2 class="section-title" onclick="toggleSection(this)">Professional Experience</h2>
             <div class="section-content">
+                
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">MARRAR, LDA.</div>
-                        <div class="job-title">Software Developer / Systems Analyst </div>
+                        <div class="company">MARRAR, LDA (ABSA Bank)</div>
+                        <div class="job-title">Systems Analyst</div>
                         <div class="duration">September 2024 – Present</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Supported and enhanced backend integrations with <strong>FlowCredit</strong> and <strong>Flexcube</strong> banking systems.</li>
-                            <li>Developed automation scripts in <strong>Python</strong> and <strong>C#</strong> for report generation and data synchronisation with banking APIs.</li>
-                            <li>Implemented <strong>ServiceNow</strong> incident management workflows and change request processes, ensuring <strong>ITIL</strong> standards compliance.</li>
-                            <li>Optimised <strong>SQL queries</strong> and enhanced database performance for financial operations.</li>
-                            <li>Designed IT modernisation plans and implemented customised backend solutions for operational efficiency.</li>
+                            <li>Supported mission-critical banking systems ensuring 24/7 availability.</li>
+                            <li>Managed <strong>549+ production incidents</strong> (L2/L3) with deep Root Cause Analysis (RCA).</li>
+                            <li>Implemented controlled changes and deployments following strict banking protocols.</li>
+                            <li>Supported APIs, complex integrations, authentication systems, and batch jobs.</li>
+                            <li>Built <strong>Python and C# automation</strong> scripts, reducing manual workload by <strong>35%</strong>.</li>
                         </ul>
                     </div>
                 </div>
@@ -618,15 +467,16 @@
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
                         <div class="company">FOSS LABS SERVICE</div>
-                        <div class="job-title">IT Consultant</div>
-                        <div class="duration">September 2023 - September 2024</div>
+                        <div class="job-title">Solutions Engineer / Systems Engineer</div>
+                        <div class="duration">September 2023 – September 2024</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Built <strong>Django</strong>- and <strong>FastAPI</strong>-based backend systems for institutional portals and LMS platforms.</li>
-                            <li>Integrated <strong>ERP (Odoo)</strong> modules with custom backend logic.</li>
-                            <li>Designed and optimised database schemas in <strong>PostgreSQL</strong> and <strong>SQLite</strong>.</li>
-                            <li>Conducted penetration testing for backend systems in Mozambique, Brazil, and Portugal.</li>
+                            <li>Delivered ERP solutions using open-source platforms tailored to client needs.</li>
+                            <li>Designed technical solutions and configurations based on business requirements.</li>
+                            <li>Built robust integrations via <strong>REST APIs</strong> and process automation.</li>
+                            <li>Designed and executed cybersecurity assessment & penetration testing services.</li>
+                            <li>Conducted security assessments and provided critical remediation support.</li>
                         </ul>
                     </div>
                 </div>
@@ -635,58 +485,99 @@
                     <div class="job-header">
                         <div class="company">WORLD MESSIANIC CHURCH</div>
                         <div class="job-title">Missionary</div>
-                        <div class="duration">January 2016 – September 2023</div>
+                        <div class="duration">2016 – 2023</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Led humanitarian and organisational initiatives across Brazil, Angola, South Africa, and Mozambique.</li>
-                            <li>Developed leadership, intercultural communication, and community engagement skills.</li>
+                            <li>Built internal management systems using <strong>Python, Django, Odoo, and MySQL</strong>.</li>
+                            <li>Coordinated humanitarian and organizational operations across multiple international regions.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">DELIMITE, LDA.</div>
+                        <div class="company">DELIMITE, LDA</div>
                         <div class="job-title">Web Developer</div>
                         <div class="duration">2014 – 2015</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Created backend logic for CMS platforms (Joomla, WordPress, EzPublish).</li>
-                            <li>Installed and secured computer systems.</li>
+                            <li>Built CMS applications using WordPress and Joomla.</li>
+                            <li>Developed backend logic, optimized performance, and implemented basic security hardening.</li>
                         </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Technical Skills</h2>
+            <div class="section-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-title">Ops & Management:</div>
+                        <div class="skill-list">Incident Mgmt (L2/L3), RCA, Change & Release Management</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Backend:</div>
+                        <div class="skill-list">Python, FastAPI, Django, REST APIs, C#, .NET, PHP, Go</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Databases:</div>
+                        <div class="skill-list">SQL Server, Oracle, PostgreSQL, MySQL</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Automation & Cloud:</div>
+                        <div class="skill-list">n8n, Zapier, UIPath, Linux, Docker, AWS basics, CI/CD, Nginx</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Security:</div>
+                        <div class="skill-list">Secure Coding, Web App Testing, Penetration Testing</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Communication:</div>
+                        <div class="skill-list">Technical Writing, Leadership, Intercultural Communication</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Education</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Projects & Writing</h2>
             <div class="section-content">
-                <div class="education-item">
-                    <div class="degree">POLYTECHNIC UNIVERSITY</div>
-                    <div class="institution">Maputo, Mz | Degree in Information Management | 2010 - 2014</div>
-                </div>
-                <div class="education-item">
-                    <div class="degree">MESSIANIC COLLEGE</div>
-                    <div class="institution">São Paulo, Brazil | Bachelor of Theology | 2016 - 2018</div>
+                <div class="projects-grid">
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Interactive Online CV</div>
+                        <div class="project-tech">HTMX, JavaScript, CSS</div>
+                        <div class="project-description">
+                            <ul><li>Hosted at: jmuconto.github.io/resume</li><li>Features dynamic toggles and optimized print engine.</li></ul>
+                        </div>
+                    </div>
+                    <div class="project-item" onclick="toggleProjectDetails(this)">
+                        <div class="project-title">Technical Writing (Medium)</div>
+                        <div class="project-tech">Content Strategy, Tech Education</div>
+                        <div class="project-description">
+                            <ul><li><strong>100+ articles</strong> published.</li><li>Averaging <strong>~300 monthly readers</strong> on software engineering topics.</li></ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Certifications</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Education & Certifications</h2>
             <div class="section-content">
+                <div class="education-item">
+                    <div class="degree">BSc in Information Management</div>
+                    <div class="institution">Polytechnic University (Maputo)</div>
+                </div>
                 <div class="certification-list">
-                    <div class="certification-item">● C# Fundamentals - Free Code Camp / Microsoft</div>
-                    <div class="certification-item">● Introduction to Cybersecurity - Cisco Networking Academy</div>
-                    <div class="certification-item">● Ethical Hacking - Cisco Networking Academy</div>
-                    <div class="certification-item">● Endpoint Security - Cisco Networking Academy</div>
-                    <div class="certification-item">● English for IT 1 - Cisco Networking Academy</div>
-                    <div class="certification-item">● English for IT 2 - Cisco Networking Academy</div>
-                    <div class="certification-item">● Single Day Masterclass with Python - Uniathena</div>
-                    <div class="certification-item">● Robotic Process Automation (RPA) - Automation Anywhere University</div>
+                    <div class="certification-item">● Cisco: Cybersecurity & Ethical Hacking</div>
+                    <div class="certification-item">● Microsoft: C# Fundamentals</div>
+                    <div class="certification-item">● Automation Anywhere: RPA</div>
+                    <div class="certification-item">● UniAthena: Python Masterclass</div>
                 </div>
             </div>
         </div>
@@ -695,117 +586,61 @@
             <h2 class="section-title" onclick="toggleSection(this)">Languages</h2>
             <div class="section-content">
                 <div class="skill-list">
-                    <strong>Portuguese</strong> (Native) | <strong>English</strong> (B2 - Fluent) | Japanese (N4 - Basic)
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">References</h2>
-            <div class="section-content">
-                <div class="skill-list" style="text-align: center; font-style: italic; color: #666;">
-                    Available upon request
+                    <strong>Portuguese</strong> (Native) | <strong>English</strong> (Fluent, B2) | <strong>Japanese</strong> (Basic, JLPT N4)
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Enhanced clipboard functionality (Decoupled from HTML)
         function copyToClipboard(text, element) {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
-                    // Visual feedback
                     const originalHTML = element.innerHTML;
                     element.innerHTML = '✨ Copied!';
-                    element.style.color = '#667eea'; // Highlight color
-                    element.style.fontWeight = 'bold';
-                    setTimeout(() => {
-                        element.innerHTML = originalHTML;
-                        element.style.color = '';
-                        element.style.fontWeight = '';
-                    }, 1500); // Shorter duration for quick feedback
-                }).catch(err => {
-                    console.error('Could not copy text: ', err);
+                    setTimeout(() => { element.innerHTML = originalHTML; }, 1500);
                 });
             }
         }
 
-        // Section Toggling (Simplified JS to only toggle class and manage title highlight)
         function toggleSection(element) {
             const content = element.nextElementSibling;
-            
-            // Toggle the 'collapsed' class on the content
             content.classList.toggle('collapsed');
-            
-            // Toggle the 'collapsed-title' class on the title for CSS highlight
             element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
         }
         
-        // Experience Details Toggling
         function toggleExperienceDetails(element) {
-            const isExpanded = element.classList.contains('expanded');
-            
-            // Close all other expanded items
-            document.querySelectorAll('.experience-item.expanded').forEach(item => {
-                if (item !== element) {
-                    item.classList.remove('expanded');
-                }
-            });
-            
-            // Toggle current item
-            element.classList.toggle('expanded', !isExpanded);
+            element.classList.toggle('expanded');
         }
         
-        // Project Details Toggling
         function toggleProjectDetails(element) {
-            const isExpanded = element.classList.contains('expanded');
-            
-            // Close all other expanded projects
-            document.querySelectorAll('.project-item.expanded').forEach(item => {
-                if (item !== element) {
-                    item.classList.remove('expanded');
-                }
-            });
-            
-            // Toggle current project
-            element.classList.toggle('expanded', !isExpanded);
+            element.classList.toggle('expanded');
         }
         
-        // Language toggle functionality
         function toggleLanguage(lang) {
-            // Note: This requires a separate cv_pt.html file to exist
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => btn.classList.remove('active'));
-            
             if (lang === 'pt') {
-                window.location.href = 'cv_pt.html';
+                // Aqui você redirecionaria para a versão PT se existisse
+                alert("Portuguese version would be loaded here.");
             } else {
                 document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
             }
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. Initialize clipboard listeners using data-copy attributes
             document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
                 item.addEventListener('click', function() {
                     copyToClipboard(this.getAttribute('data-copy'), this);
                 });
             });
 
-            // 2. Initialize all sections as collapsed (Better for first impression scan)
             document.querySelectorAll('.section-content').forEach(content => {
-                 // Keep Summary section open by default
                 if (!content.previousElementSibling.textContent.includes('Summary')) {
                     content.classList.add('collapsed');
                     content.previousElementSibling.classList.add('collapsed-title');
                 }
             });
-
-            // Ensure Summary is explicitly expanded
-            const summaryContent = document.querySelector('.summary').parentNode;
-            summaryContent.classList.remove('collapsed');
-            summaryContent.previousElementSibling.classList.remove('collapsed-title');
         });
     </script>
 </body>

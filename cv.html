@@ -3,242 +3,655 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Muconto | Interactive CV</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>João Domingos Matola Muconto - CV</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .gradient-bg { background: var(--gradient); }
-        .gradient-text { 
-            background: var(--gradient); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-size: 14px;
+            min-height: 100vh;
         }
-        
-        .cv-card { @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6 transition-all duration-300; }
-        .cv-card:hover { @apply shadow-md transform -translate-y-1; }
+
+        .container {
+            max-width: 8.5in;
+            margin: 0 auto;
+            background: white;
+            min-height: 11in;
+            padding: 0.75in;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e5e5;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .title {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            color: #555;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-2px);
+            color: #667eea;
+        }
+
+        .section-title.collapsed-title {
+            background-color: #f0f3ff;
+            border-radius: 4px;
+            padding-left: 0.5rem;
+        }
+
+        .section {
+            margin-bottom: 1.25rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+        .section:nth-child(6) { animation-delay: 0.5s; }
+        .section:nth-child(7) { animation-delay: 0.6s; }
+        .section:nth-child(8) { animation-delay: 0.7s; }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.25rem;
+            border-bottom: 1px solid #ddd;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .section-title:hover {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .section-title::after {
+            content: '▼';
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 12px;
+            opacity: 0.5;
+            transition: transform 0.3s ease;
+        }
+
+        .section-content {
+            transition: all 0.3s ease;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .section-content.collapsed + .section-title::after {
+            transform: rotate(-90deg);
+        }
+
+        .section-content.collapsed + .section-title {
+            border-bottom-color: transparent;
+        }
+
+        .summary {
+            text-align: justify;
+            color: #444;
+            line-height: 1.7;
+        }
+
+        .experience-item, .project-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .experience-item:hover, .project-item:hover {
+            background: #f8f9fa;
+            border-left-color: #667eea;
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .job-header {
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 15px;
+        }
+
+        .job-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .duration {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .job-description {
+            margin-left: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+
+        .experience-item.expanded .job-description,
+        .project-item.expanded .project-description {
+            max-height: 800px;
+            opacity: 1;
+            margin-top: 0.5rem;
+        }
+
+        .job-description ul, .project-description ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .job-description li, .project-description li {
+            margin-bottom: 0.4rem;
+            position: relative;
+            padding-left: 1rem;
+            color: #444;
+        }
+
+        .job-description li:before, .project-description li:before {
+            content: "●";
+            color: #667eea;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 0.75rem;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-tech {
+            font-size: 11px;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .skill-category {
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .skill-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 13px;
+            margin-bottom: 0.25rem;
+        }
+
+        .skill-list {
+            color: #555;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .education-item {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .education-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .degree {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .institution {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .certification-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .certification-item {
+            font-size: 12px;
+            color: #444;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .certification-item:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .cv-card { border: none; shadow: none; padding: 0; margin-bottom: 1.5rem; }
-            .gradient-text { -webkit-text-fill-color: black; color: black; }
-            .gradient-bg { background: transparent !important; color: black !important; border: 1px solid #eee; }
+            body { print-color-adjust: exact; background: white; }
+            .container { box-shadow: none; margin: 0; padding: 0.5in; border-radius: 0; }
+            .print-btn, .language-toggle { display: none; }
+            .section-content, .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
         }
-
-        .lang-en [data-lang="pt"], .lang-pt [data-lang="en"] { display: none; }
     </style>
 </head>
-<body class="lang-en antialiased text-gray-800 pb-20">
+<body>
+    <button class="print-btn" onclick="window.print()" title="Print CV">🖨️</button>
 
-    <!-- Sticky Header / Toolbar -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 no-print">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="index.html" class="text-sm font-semibold text-gray-500 hover:text-indigo-600 transition">
-                <i class="fas fa-arrow-left mr-2"></i> Back to Home
-            </a>
-            <div class="flex gap-4">
-                <button onclick="toggleLanguage()" class="bg-gray-100 hover:bg-gray-200 px-4 py-1.5 rounded-full text-sm font-medium transition">
-                    <span data-lang="en">Switch to PT 🇵🇹</span>
-                    <span data-lang="pt">Mudar para EN 🇬🇧</span>
-                </button>
-                <button onclick="window.print()" class="gradient-bg text-white px-4 py-1.5 rounded-full text-sm font-medium shadow-lg transition">
-                    <i class="fas fa-print mr-2"></i> Print PDF
-                </button>
+    <div class="language-toggle">
+        <button class="lang-btn" onclick="toggleLanguage('pt')">PT</button>
+        <span style="margin: 0 0.5rem; color: #ddd;">|</span>
+        <button class="lang-btn active" onclick="toggleLanguage('en')">EN</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
+            <div class="subtitle">Application Support Engineer | Data Analyst | Programmer</div>
+            <div class="contact-info">
+                <div class="contact-item" data-copy="+258850452814">📞 +258 850 452 814</div>
+                <div class="contact-item">📍 MAPUTO, MOZAMBIQUE</div>
+                <div class="contact-item" data-copy="j.muconto@gmail.com">✉️ J.MUCONTO@GMAIL.COM</div>
+                <div class="contact-item">🔗 github.com/jmuconto</div>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-4xl mx-auto px-4 mt-8">
-        
-        <!-- Header Section -->
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-black gradient-text uppercase tracking-tight mb-2">João Domingos Matola Muconto</h1>
-            <p class="text-lg text-gray-600 font-medium mb-6">
-                <span data-lang="en">Application Support Officer | Systems Engineer | Production Engineer</span>
-                <span data-lang="pt">Oficial de Suporte de Aplicações | Engenheiro de Sistemas | Engenheiro de Produção</span>
-            </p>
-            
-            <div class="flex flex-wrap justify-center gap-4 text-sm">
-                <button onclick="copyToClipboard('j.muconto@gmail.com', this)" class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg hover:border-indigo-400 transition group">
-                    <i class="fas fa-envelope text-indigo-500"></i>
-                    <span>j.muconto@gmail.com</span>
-                    <i class="fas fa-copy opacity-0 group-hover:opacity-50 ml-2"></i>
-                </button>
-                <button onclick="copyToClipboard('+258850452814', this)" class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg hover:border-indigo-400 transition group">
-                    <i class="fas fa-phone text-indigo-500"></i>
-                    <span>+258 850 452 814</span>
-                    <i class="fas fa-copy opacity-0 group-hover:opacity-50 ml-2"></i>
-                </button>
-                <a href="https://linkedin.com/in/jmuconto" target="_blank" class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg hover:border-indigo-400 transition">
-                    <i class="fab fa-linkedin text-blue-600"></i> LinkedIn
-                </a>
-                <a href="https://github.com/jmuconto" target="_blank" class="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-lg hover:border-indigo-400 transition">
-                    <i class="fab fa-github text-gray-900"></i> GitHub
-                </a>
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Professional Profile</h2>
+            <div class="section-content">
+                <div class="summary">
+                    IT professional with experience in <strong>application support</strong>, <strong>data analysis</strong>, software development, and production operations in banking and enterprise environments. Experienced in incident management, process automation, system integration, data analysis, and backend development using <strong>Python, C#, SQL, and REST APIs</strong>. Focused on continuous improvement, operational reliability, and data-driven decision support.
+                </div>
             </div>
-        </header>
+        </div>
 
-        <!-- Summary Section -->
-        <section class="cv-card">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                <i class="fas fa-user-tie text-indigo-500"></i>
-                <span data-lang="en">Professional Summary</span>
-                <span data-lang="pt">Resumo Profissional</span>
-            </h2>
-            <p class="text-gray-600 leading-relaxed" data-lang="en">
-                Application Support and Production Engineer with experience in banking operations, enterprise software development, and technical consulting. Founded and operated a software consultancy delivering ERP solutions, system integrations, automation, and customer support. Experienced in production support, incident management, APIs, SQL, and mission-critical financial systems.
-            </p>
-            <p class="text-gray-600 leading-relaxed" data-lang="pt">
-                Engenheiro de Produção e Suporte de Aplicações com experiência em operações bancárias, desenvolvimento de software empresarial e consultoria técnica. Fundou e operou uma consultoria de software entregando soluções ERP, integrações de sistemas e automação. Experiente em suporte de produção, gestão de incidentes, APIs e sistemas financeiros críticos.
-            </p>
-        </section>
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Professional Experience</h2>
+            <div class="section-content">
 
-        <!-- Experience Section -->
-        <section class="mb-8">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2 px-2">
-                <i class="fas fa-briefcase text-indigo-500"></i>
-                <span data-lang="en">Professional Experience</span>
-                <span data-lang="pt">Experiência Profissional</span>
-            </h2>
-
-            <!-- Job 1 -->
-            <div class="cv-card overflow-hidden group">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="text-lg font-bold">MARRAR, LDA (Assigned to ABSA Moçambique)</h3>
-                        <p class="text-indigo-600 font-semibold" data-lang="en">Application Support - Programmer/ System Analyst</p>
-                        <p class="text-indigo-600 font-semibold" data-lang="pt">Suporte de Aplicações - Programador/ Analista de Sistemas</p>
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">MARRAR, LDA – Programmer / Systems Analyst</div>
+                        <div class="job-title">Subcontracted at ABSA Moçambique</div>
+                        <div class="duration">September 2024 – Present</div>
                     </div>
-                    <span class="text-sm bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-medium">2024 - Present</span>
-                </div>
-                
-                <ul class="space-y-2 text-gray-600 text-sm list-disc ml-5">
-                    <li data-lang="en">L2/L3 support for mission-critical banking applications and Root Cause Analysis (RCA).</li>
-                    <li data-lang="pt">Suporte L2/L3 para aplicações bancárias críticas e Análise de Causa Raiz (RCA).</li>
-                    <li data-lang="en">Troubleshoot REST APIs, backend integrations, and SQL Server/Oracle databases.</li>
-                    <li data-lang="pt">Resolução de problemas em APIs REST, integrações backend e bases de dados SQL/Oracle.</li>
-                    <li><strong class="text-gray-800" data-lang="en">Key Result:</strong> <span data-lang="en">Reduced manual operational effort by 35% through Python and C# automation.</span>
-                        <strong class="text-gray-800" data-lang="pt">Resultado:</strong> <span data-lang="pt">Redução do esforço operacional manual em 35% através de automação com Python e C#.</span></li>
-                </ul>
-
-                <!-- Collapsible Detail (Interactive Feature) -->
-                <div class="mt-4 pt-4 border-t border-gray-100 hidden group-[.is-open]:block">
-                    <p class="text-sm text-gray-500" data-lang="en">Managed over 549 production incidents across critical banking applications. Supported enterprise integrations and production changes.</p>
-                    <p class="text-sm text-gray-500" data-lang="pt">Geriu mais de 549 incidentes de produção em aplicações bancárias críticas. Suportou integrações empresariais e mudanças de produção.</p>
-                </div>
-                <button onclick="this.closest('.group').classList.toggle('is-open')" class="mt-4 text-xs font-bold text-indigo-500 hover:text-indigo-700 uppercase tracking-widest no-print">
-                    <span class="group-[.is-open]:hidden" data-lang="en">Show More Details +</span>
-                    <span class="group-[.is-open]:hidden" data-lang="pt">Ver Mais Detalhes +</span>
-                    <span class="hidden group-[.is-open]:block" data-lang="en">Show Less -</span>
-                    <span class="hidden group-[.is-open]:block" data-lang="pt">Ver Menos -</span>
-                </button>
-            </div>
-
-            <!-- Job 2 -->
-            <div class="cv-card">
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h3 class="text-lg font-bold">FOSS LABS SERVICE</h3>
-                        <p class="text-indigo-600 font-semibold" data-lang="en">Founder | Programmer | Technical Support</p>
-                        <p class="text-indigo-600 font-semibold" data-lang="pt">Fundador | Programador | Suporte Técnico</p>
+                    <div class="job-description">
+                        <ul>
+                            <li>L2/L3 support for critical banking applications.</li>
+                            <li>Incident, problem, and change management in production environments.</li>
+                            <li>Development of automation and reporting tools using Python and C#.</li>
+                            <li>Analysis of operational data to identify trends and drive continuous improvement.</li>
+                            <li>Production of operational reports and support for KPI monitoring.</li>
+                            <li>Support for SQL Server and Oracle databases.</li>
+                            <li>Diagnosis of integrations, REST APIs, authentication, and batch processes.</li>
+                            <li>Collaboration with development, infrastructure, and business teams.</li>
+                        </ul>
                     </div>
-                    <span class="text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded-full font-medium">2023 - 2024</span>
                 </div>
-                <ul class="space-y-2 text-gray-600 text-sm list-disc ml-5">
-                    <li data-lang="en">Founded software consultancy delivering ERP systems and workflow automation.</li>
-                    <li data-lang="pt">Fundou consultoria de software entregando sistemas ERP e automação de workflow.</li>
-                    <li data-lang="en">Performed cybersecurity assessments and system hardening.</li>
-                    <li data-lang="pt">Realizou avaliações de cibersegurança e endurecimento de sistemas.</li>
-                </ul>
-            </div>
-        </section>
 
-        <!-- Skills Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="cv-card">
-                <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-code text-indigo-500"></i>
-                    <span data-lang="en">Programming & Tools</span>
-                    <span data-lang="pt">Programação e Ferramentas</span>
-                </h2>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Python</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">C#</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Java</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">SQL</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">PHP</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Go</span>
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-bold">REST APIs</span>
-                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-bold">Docker</span>
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">FOSS LABS SERVICE – Founder | Programmer | Technical Support</div>
+                        <div class="duration">September 2023 – September 2024</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Development and customization of ERP solutions based on Open Source technologies.</li>
+                            <li>Implementation of system integrations using REST APIs.</li>
+                            <li>Development of automations for operational processes and report generation.</li>
+                            <li>MySQL database administration and client technical support.</li>
+                            <li>Implementation of security improvements and cybersecurity assessments.</li>
+                            <li>Development and maintenance of internal applications using Python, Django, web2py, SQLAlchemy, and Odoo.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="cv-card">
-                <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <i class="fas fa-robot text-indigo-500"></i>
-                    <span data-lang="en">Automation & Ops</span>
-                    <span data-lang="pt">Automação e Ops</span>
-                </h2>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Incident Management</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">n8n / Zapier</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">RPA (UiPath)</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Linux Server</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded text-xs font-semibold">Oracle/Postgres</span>
-                </div>
-            </div>
-        </section>
 
-        <!-- Footer / Languages / Education -->
-        <footer class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="cv-card">
-                <h2 class="text-lg font-bold mb-3" data-lang="en">Education</h2>
-                <h2 class="text-lg font-bold mb-3" data-lang="pt">Educação</h2>
-                <p class="text-sm font-bold">Bachelor of Information Management</p>
-                <p class="text-sm text-gray-500">Polytechnic University – Maputo</p>
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">WORLD MESSIANIC CHURCH – Missionary</div>
+                        <div class="duration">2016 – 2023</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Digitization of administrative processes and task automation.</li>
+                            <li>Report development and information management support.</li>
+                            <li>MySQL database administration and internal application support.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item" onclick="toggleExperienceDetails(this)">
+                    <div class="job-header">
+                        <div class="company">DELIMITE, LDA – Web Developer</div>
+                        <div class="duration">2014 – 2015</div>
+                    </div>
+                    <div class="job-description">
+                        <ul>
+                            <li>Development of web applications using WordPress, Joomla, and PHP.</li>
+                            <li>Backend functionality development and database integration.</li>
+                            <li>Performance optimization and implementation of security best practices.</li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
-            <div class="cv-card">
-                <h2 class="text-lg font-bold mb-3" data-lang="en">Languages</h2>
-                <h2 class="text-lg font-bold mb-3" data-lang="pt">Idiomas</h2>
-                <div class="text-sm space-y-1">
-                    <p>🇵🇹 Portuguese — <span class="text-gray-500">Native</span></p>
-                    <p>🇬🇧 English — <span class="text-gray-500">Professional (B2)</span></p>
-                    <p>🇯🇵 Japanese — <span class="text-gray-500">JLPT N4</span></p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Technical Skills</h2>
+            <div class="section-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-title">Application Support</div>
+                        <div class="skill-list">L2/L3 Support, Incident Management, Problem Management, Change Management, RCA, Application Monitoring, SLA</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Data Analysis</div>
+                        <div class="skill-list">SQL, Reporting, BI, Data Validation, Dashboards, Power BI, Advanced Excel, Streamlit/Pandas</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Programming</div>
+                        <div class="skill-list">Python, C#, PHP, Go, SQL, Ruby</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Backend & Integration</div>
+                        <div class="skill-list">FastAPI, Django, Ruby on Rails, Hanami, Flask, Laravel, ASP.NET, REST APIs, Postman</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Databases</div>
+                        <div class="skill-list">SQL Server, Oracle, PostgreSQL, MySQL, SQLite, MongoDB</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Automation & AI</div>
+                        <div class="skill-list">Python Automation, n8n, Zapier, UIPath, Automation Anywhere, Ollama LLM, Botpress</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Infrastructure</div>
+                        <div class="skill-list">Linux, Windows Server, Docker, Git, GitHub Actions, GitLab CI/CD, Nginx, AWS Fundamentals</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Cybersecurity</div>
+                        <div class="skill-list">Secure Coding, Nmap, Wireshark</div>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </div>
 
-    </main>
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Education</h2>
+            <div class="section-content">
+                <div class="education-item">
+                    <div class="degree">BSc in Information Management</div>
+                    <div class="institution">Polytechnic University – Maputo</div>
+                </div>
+                <div class="education-item">
+                    <div class="degree">Bachelor of Theology</div>
+                    <div class="institution">Messianic Faculty – São Paulo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Certifications</h2>
+            <div class="section-content">
+                <div class="certification-list">
+                    <div class="certification-item">IBM – Business Intelligence</div>
+                    <div class="certification-item">IBM – Generative AI</div>
+                    <div class="certification-item">Cisco – Cybersecurity</div>
+                    <div class="certification-item">Cisco – Ethical Hacking</div>
+                    <div class="certification-item">Cisco – Endpoint Security</div>
+                    <div class="certification-item">Microsoft – C# Fundamentals</div>
+                    <div class="certification-item">Automation Anywhere – RPA</div>
+                    <div class="certification-item">UniAthena – Python Masterclass</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Languages</h2>
+            <div class="section-content">
+                <div class="skill-list">
+                    <strong>Portuguese</strong> (Native) | <strong>English</strong> (Fluent, B2) | <strong>Japanese</strong> (Basic, JLPT N4)
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function toggleLanguage() {
-            const body = document.body;
-            if (body.classList.contains('lang-en')) {
-                body.classList.remove('lang-en');
-                body.classList.add('lang-pt');
-            } else {
-                body.classList.remove('lang-pt');
-                body.classList.add('lang-en');
+        function copyToClipboard(text, element) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalHTML = element.innerHTML;
+                    element.innerHTML = '✨ Copied!';
+                    setTimeout(() => { element.innerHTML = originalHTML; }, 1500);
+                });
             }
         }
 
-        function copyToClipboard(text, btn) {
-            navigator.clipboard.writeText(text);
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = `<i class="fas fa-check text-green-500"></i> <span class="text-green-600">Copied!</span>`;
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-            }, 2000);
+        function toggleSection(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('collapsed');
+            element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
         }
+
+        function toggleExperienceDetails(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function toggleProjectDetails(element) {
+            element.classList.toggle('expanded');
+        }
+
+        function toggleLanguage(lang) {
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(btn => btn.classList.remove('active'));
+            if (lang === 'pt') {
+                // Redirect to Portuguese version if available
+                window.location.href = 'cv_pt.html';
+            } else {
+                document.querySelector('.lang-btn[onclick="toggleLanguage(\'en\')"]').classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
+                item.addEventListener('click', function() {
+                    copyToClipboard(this.getAttribute('data-copy'), this);
+                });
+            });
+
+            // Initialize all sections as collapsed except Profile
+            document.querySelectorAll('.section-content').forEach(content => {
+                if (!content.previousElementSibling.textContent.includes('Professional Profile')) {
+                    content.classList.add('collapsed');
+                    content.previousElementSibling.classList.add('collapsed-title');
+                }
+            });
+        });
     </script>
 </body>
 </html>

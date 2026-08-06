@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - João Muconto</title>
     
-    <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" 
           content="default-src 'self'; 
                    script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; 
@@ -42,12 +41,6 @@
             background-clip: text;
         }
 
-        .gradient-border {
-            border-bottom: 3px solid transparent;
-            border-image: var(--gradient);
-            border-image-slice: 1;
-        }
-
         .article-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
@@ -66,7 +59,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Article Content Styles */
         .article-content h1 {
             font-size: 2.5rem;
             font-weight: 700;
@@ -119,7 +111,6 @@
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             font-size: 0.9em;
-            font-family: 'Courier New', monospace;
         }
 
         .article-content pre {
@@ -144,7 +135,6 @@
             margin: 1.5rem 0;
         }
 
-        /* Skeleton Loading */
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -157,7 +147,6 @@
             100% { background-position: 200% 0; }
         }
 
-        /* Back Button */
         .back-btn {
             transition: all 0.3s ease;
         }
@@ -166,7 +155,6 @@
             transform: translateX(-4px);
         }
 
-        /* Tags */
         .tag {
             transition: all 0.2s ease;
         }
@@ -176,7 +164,10 @@
             color: white;
         }
 
-        /* Responsive Typography */
+        .home-link:hover {
+            transform: translateX(-2px);
+        }
+
         @media (max-width: 768px) {
             .article-content h1 {
                 font-size: 2rem;
@@ -187,15 +178,6 @@
             .article-content h3 {
                 font-size: 1.2rem;
             }
-        }
-
-        /* Home link in header */
-        .home-link {
-            transition: all 0.3s ease;
-        }
-
-        .home-link:hover {
-            transform: translateX(-2px);
         }
     </style>
 </head>
@@ -268,12 +250,10 @@
         // ═══════════════════════════════════════════════════════
 
         const BLOG_CONFIG = {
-            articlesPath: 'blog/',      // Folder where articles are stored
-            fileExtension: '.json',     // JSON files
-            articlesPerPage: 10,        
-            snippetLength: 200,         
+            articlesPath: 'blog/',
+            snippetLength: 200,
             cacheKey: 'blog_articles_cache',
-            cacheTTL: 3600000          // 1 hour
+            cacheTTL: 3600000
         };
 
         // ═══════════════════════════════════════════════════════
@@ -303,51 +283,8 @@
         }
 
         // ═══════════════════════════════════════════════════════
-        // ARTICLE PARSING
+        // HELPERS
         // ═══════════════════════════════════════════════════════
-
-        function parseMarkdown(content) {
-            const lines = content.split('\n');
-            let title = '';
-            let date = '';
-            let tags = [];
-            let body = [];
-            let readingTime = 0;
-            let inFrontMatter = false;
-            let frontMatterCount = 0;
-
-            // Check for frontmatter
-            if (lines[0] && lines[0].trim() === '---') {
-                inFrontMatter = true;
-                frontMatterCount = 1;
-                
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].trim() === '---') {
-                        inFrontMatter = false;
-                        frontMatterCount = i + 1;
-                        break;
-                    }
-                    
-                    const line = lines[i];
-                    if (line.startsWith('title:')) {
-                        title = line.replace('title:', '').trim();
-                    } else if (line.startsWith('date:')) {
-                        date = line.replace('date:', '').trim();
-                    } else if (line.startsWith('tags:')) {
-                        tags = line.replace('tags:', '').trim().split(',').map(t => t.trim());
-                    }
-                }
-            }
-
-            // Get body (after frontmatter)
-            body = lines.slice(frontMatterCount).join('\n');
-
-            // Calculate reading time (approx 200 words per minute)
-            const wordCount = body.split(/\s+/).length;
-            readingTime = Math.max(1, Math.round(wordCount / 200));
-
-            return { title, date, tags, body, readingTime };
-        }
 
         function extractSnippet(content, length = 200) {
             const plainText = content.replace(/[#*`]/g, '').trim();
@@ -386,7 +323,6 @@
             const container = document.getElementById('blog-container');
             const skeleton = document.getElementById('skeleton-loader');
             
-            // Hide skeleton
             if (skeleton) skeleton.style.display = 'none';
 
             if (!articles || articles.length === 0) {
@@ -400,7 +336,6 @@
                 return;
             }
 
-            // Sort articles by date (newest first)
             const sorted = [...articles].sort((a, b) => {
                 const dateA = parseDate(a.date);
                 const dateB = parseDate(b.date);
@@ -441,7 +376,7 @@
                             
                             <div class="flex items-center justify-between flex-wrap gap-2">
                                 <span class="text-sm text-gray-400">
-                                    ${article.readingTime} min read
+                                    ${article.readingTime || Math.max(1, Math.round(article.body.split(/\s+/).length / 200))} min read
                                 </span>
                                 <button onclick="openArticle('${slugify(article.title)}')" 
                                         class="read-more text-indigo-600 font-medium hover:text-indigo-800 transition inline-flex items-center gap-1">
@@ -457,18 +392,16 @@
             `;
         }
 
-        function renderArticle(article, slug) {
+        function renderArticle(article) {
             const container = document.getElementById('blog-container');
             const articleView = document.getElementById('article-view');
             const articleContent = document.getElementById('article-content');
             const skeleton = document.getElementById('skeleton-loader');
 
-            // Hide skeleton and index
             if (skeleton) skeleton.style.display = 'none';
             if (container) container.style.display = 'none';
             articleView.classList.remove('hidden');
 
-            // Convert markdown to HTML (simple implementation)
             let html = article.body;
 
             // Headers
@@ -492,34 +425,31 @@
             // Links
             html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-indigo-600 hover:underline">$1</a>');
 
-            // Lists (basic)
+            // Lists
             html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
             html = html.replace(/^(\d+)\. (.*$)/gim, '<li>$2</li>');
-            
-            // Wrap lists
-            html = html.replace(/<li>.*?<\/li>/gs, (match) => {
+            html = html.replace(/(<li>.*?<\/li>)+/gs, (match) => {
                 if (match.includes('<li>')) {
                     return `<ul>${match}</ul>`;
                 }
                 return match;
             });
 
-            // Paragraphs (simple)
+            // Paragraphs
             html = html.replace(/\n\n/g, '</p><p>');
             html = '<p>' + html + '</p>';
 
-            // Clean up empty paragraphs
+            // Clean up
             html = html.replace(/<p><\/p>/g, '');
             html = html.replace(/<p>(\s*)<h/g, '<h');
             html = html.replace(/<\/h(\d)><\/p>/g, '</h$1>');
 
-            // Build article HTML
             articleContent.innerHTML = `
                 <div class="mb-8">
                     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${article.title}</h1>
                     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                         ${article.date ? `<span>${formatDate(parseDate(article.date))}</span>` : ''}
-                        <span>${article.readingTime} min read</span>
+                        <span>${article.readingTime || Math.max(1, Math.round(article.body.split(/\s+/).length / 200))} min read</span>
                     </div>
                     ${article.tags && article.tags.length > 0 ? `
                         <div class="flex flex-wrap gap-2 mt-4">
@@ -531,35 +461,33 @@
                         </div>
                     ` : ''}
                 </div>
-                <div class="prose max-w-none">
+                <div>
                     ${html}
                 </div>
             `;
 
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Update URL
             if (window.history && window.history.pushState) {
-                window.history.pushState({ slug }, '', `?article=${slug}`);
+                window.history.pushState({ slug: slugify(article.title) }, '', `?article=${slugify(article.title)}`);
             }
         }
 
         function goBackToIndex() {
             const container = document.getElementById('blog-container');
             const articleView = document.getElementById('article-view');
-            const skeleton = document.getElementById('skeleton-loader');
 
             articleView.classList.add('hidden');
             container.style.display = 'block';
             
-            // Update URL
             if (window.history && window.history.pushState) {
                 window.history.pushState({}, '', window.location.pathname);
             }
 
-            // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Reload articles to ensure fresh view
+            loadArticles();
         }
 
         // ═══════════════════════════════════════════════════════
@@ -568,34 +496,50 @@
 
         const articleCache = {};
 
-        function getArticleSlug(title) {
-            return slugify(title);
+        async function loadArticles() {
+            let articles = getCachedArticles();
+
+            if (!articles) {
+                try {
+                    const response = await fetch(`${BLOG_CONFIG.articlesPath}index.json`);
+                    if (response.ok) {
+                        articles = await response.json();
+                        cacheArticles(articles);
+                    } else {
+                        articles = [];
+                    }
+                } catch (error) {
+                    console.warn('Failed to load articles:', error);
+                    articles = [];
+                }
+            }
+
+            renderArticleIndex(articles);
+            return articles;
         }
 
         async function loadArticle(slug) {
-            // Check cache first
             if (articleCache[slug]) {
-                renderArticle(articleCache[slug], slug);
+                renderArticle(articleCache[slug]);
                 return;
             }
 
             try {
-                // Try to find article in loaded articles
-                const articles = getCachedArticles() || [];
-                const article = articles.find(a => getArticleSlug(a.title) === slug);
-                
-                if (article) {
-                    articleCache[slug] = article;
-                    renderArticle(article, slug);
-                    return;
-                }
-
-                // If not found, try to load from file
+                // Try to load from individual file
                 const response = await fetch(`${BLOG_CONFIG.articlesPath}${slug}.json`);
                 if (response.ok) {
                     const data = await response.json();
                     articleCache[slug] = data;
-                    renderArticle(data, slug);
+                    renderArticle(data);
+                    return;
+                }
+
+                // If not found, try to find in index
+                const articles = getCachedArticles() || [];
+                const article = articles.find(a => slugify(a.title) === slug);
+                if (article) {
+                    articleCache[slug] = article;
+                    renderArticle(article);
                     return;
                 }
 
@@ -622,56 +566,23 @@
         // INITIALIZATION
         // ═══════════════════════════════════════════════════════
 
-        async function initBlog() {
-            const container = document.getElementById('blog-container');
-            const skeleton = document.getElementById('skeleton-loader');
-            const articleView = document.getElementById('article-view');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-            // Check for article in URL
             const urlParams = new URLSearchParams(window.location.search);
             const articleSlug = urlParams.get('article');
 
             if (articleSlug) {
-                // Load specific article
-                try {
-                    const articles = getCachedArticles() || [];
-                    const article = articles.find(a => getArticleSlug(a.title) === articleSlug);
-                    
-                    if (article) {
-                        container.style.display = 'none';
-                        articleView.classList.remove('hidden');
-                        renderArticle(article, articleSlug);
-                        return;
-                    }
-                } catch (e) {}
+                const container = document.getElementById('blog-container');
+                const articleView = document.getElementById('article-view');
+                container.style.display = 'none';
+                articleView.classList.remove('hidden');
+                loadArticle(articleSlug);
+            } else {
+                loadArticles();
             }
 
-            // Load articles from cache or fetch
-            let articles = getCachedArticles();
-
-            if (!articles) {
-                try {
-                    // Try to load articles from blog/index.json
-                    const response = await fetch(`${BLOG_CONFIG.articlesPath}index.json`);
-                    if (response.ok) {
-                        articles = await response.json();
-                        cacheArticles(articles);
-                    } else {
-                        // Fallback to sample data
-                        articles = getSampleArticles();
-                        cacheArticles(articles);
-                    }
-                } catch (error) {
-                    console.warn('Failed to load articles, using sample data:', error);
-                    articles = getSampleArticles();
-                    cacheArticles(articles);
-                }
-            }
-
-            renderArticleIndex(articles);
-
-            // Handle browser back/forward
-            window.addEventListener('popstate', (event) => {
+            window.addEventListener('popstate', function() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const slug = urlParams.get('article');
                 if (slug) {
@@ -680,195 +591,6 @@
                     goBackToIndex();
                 }
             });
-        }
-
-        // ═══════════════════════════════════════════════════════
-        // SAMPLE ARTICLES (for demo - about the project)
-        // ═══════════════════════════════════════════════════════
-
-        function getSampleArticles() {
-            return [
-                {
-                    title: "Building an Interactive CV with HTMX",
-                    date: "2024-12-15",
-                    tags: ["web-development", "htmx", "javascript", "project"],
-                    readingTime: 5,
-                    body: `
-## Introduction
-
-This project is an interactive, print-optimized CV built with HTMX and Tailwind CSS. The goal was to create a modern, engaging resume experience that stands out from traditional PDFs while being fast and accessible.
-
-## Why HTMX?
-
-HTMX allows you to build dynamic web applications without complex JavaScript frameworks. It lets you access AJAX, CSS transitions, WebSockets, and more directly from HTML attributes, making it perfect for a lightweight project like this.
-
-## Key Features
-
-The interactive CV includes:
-
-- **Collapsible sections** - Click to expand/collapse experience, projects, and skills
-- **Multi-language support** - Toggle between Portuguese and English
-- **Print optimization** - Clean, professional output for printing
-- **Instant copy** - Click contact info to copy to clipboard
-
-## Technical Implementation
-
-The core of the interactivity is powered by HTMX's hx-trigger and hx-swap attributes. For example, clicking a section title triggers a GET request that returns the expanded content.
-
-### Performance
-
-With minimal dependencies and no build process, the CV loads instantly and scores 96+ on Lighthouse performance tests.
-
-## Project Structure
-
-\`\`\`
-project/
-├── index.html      # Landing page
-├── cv.html         # Interactive CV (Portuguese)
-├── cv_pt.html      # Interactive CV (English)
-├── blog.html       # Blog page
-└── blog/           # Blog articles
-    └── index.json  # Article index
-\`\`\`
-
-## Conclusion
-
-Building an interactive CV with HTMX is a great way to showcase technical skills while providing a unique user experience. The result is both functional and impressive to potential employers.
-                    `
-                },
-                {
-                    title: "Secure Testimonials Without a Database",
-                    date: "2024-12-10",
-                    tags: ["security", "javascript", "performance", "project"],
-                    readingTime: 4,
-                    body: `
-## Introduction
-
-Adding testimonials to your website doesn't require a complex database setup. In this project, I implemented secure, performant testimonials using pure HTML, CSS, and JavaScript.
-
-## Security First
-
-Security is paramount when handling user-generated content. Our implementation includes:
-
-- **Content Security Policy (CSP)** headers
-- **Data encryption** at rest
-- **Integrity verification** on load
-- **XSS prevention** with sanitization
-- **eval() blocking**
-
-## Performance Optimizations
-
-The testimonials system is built with performance in mind:
-
-- **Lazy loading** with Intersection Observer
-- **Skeleton loading** for better UX
-- **DOM batching** with DocumentFragment
-- **Session caching** for repeat visits
-- **RequestAnimationFrame** for smooth rendering
-
-## Implementation
-
-The entire system is contained in a single HTML file with no external dependencies. Testimonials are stored in a JavaScript array that's encrypted and integrity-checked.
-
-## Code Example
-
-Here's a simplified version of the testimonial rendering:
-
-\`\`\`javascript
-function renderTestimonials(containerId) {
-  const container = document.getElementById(containerId);
-  const testimonials = getDecryptedTestimonials();
-  
-  testimonials.forEach(t => {
-    const card = document.createElement('div');
-    card.className = 'testimonial-card';
-    card.innerHTML = sanitizeHTML(t.text);
-    container.appendChild(card);
-  });
-}
-\`\`\`
-
-## Conclusion
-
-This approach provides production-grade security and performance without the complexity of build tools or dependencies. It's easy to deploy, maintain, and audit.
-                    `
-                },
-                {
-                    title: "Blog System Architecture",
-                    date: "2024-12-08",
-                    tags: ["architecture", "javascript", "project", "blog"],
-                    readingTime: 4,
-                    body: `
-## Introduction
-
-The blog system for this project was designed to be simple, fast, and maintainable. It reads articles from a \`blog/\` folder and serves them as JSON files, with no database required.
-
-## Architecture Overview
-
-The blog follows a simple architecture:
-
-1. **Articles** are stored as JSON files in the \`blog/\` folder
-2. **Index** is maintained in \`blog/index.json\` for fast loading
-3. **Client-side rendering** with vanilla JavaScript
-4. **Session caching** for performance
-5. **URL-based routing** for direct article access
-
-## File Structure
-
-\`\`\`
-blog/
-├── index.json                      # Article index
-├── building-an-interactive-cv-with-htmx.json
-├── secure-testimonials-without-a-database.json
-└── blog-system-architecture.json
-\`\`\`
-
-## Article Format
-
-Each article follows a simple JSON format:
-
-\`\`\`json
-{
-  "title": "Article Title",
-  "date": "2024-12-15",
-  "tags": ["tag1", "tag2"],
-  "readingTime": 5,
-  "body": "## Markdown content here..."
-}
-\`\`\`
-
-## Performance Considerations
-
-- **Lazy loading** - Articles load on demand
-- **Caching** - Articles are cached in sessionStorage
-- **Skeleton loading** - Provides immediate visual feedback
-- **Minimal dependencies** - No frameworks required
-
-## Future Improvements
-
-- **Search functionality** - Search articles by title or tag
-- **Pagination** - Handle larger article collections
-- **RSS feed** - For syndication
-- **Related articles** - Suggest similar content
-
-## Conclusion
-
-This simple architecture provides a fast, maintainable blog system that's perfect for a personal project. It's easy to add new articles and requires no server-side processing.
-                    `
-                }
-            ];
-        }
-
-        // ═══════════════════════════════════════════════════════
-        // START
-        // ═══════════════════════════════════════════════════════
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update year
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-            // Init blog
-            initBlog();
 
             // Security: Block eval
             window.eval = function() {

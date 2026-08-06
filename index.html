@@ -76,6 +76,34 @@
         .section-fade:nth-child(2) { animation-delay: 0.2s; }
         .section-fade:nth-child(3) { animation-delay: 0.3s; }
         .section-fade:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Navigation link active state */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: #667eea;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
     </style>
 </head>
 <body class="antialiased text-gray-800">
@@ -83,9 +111,10 @@
     <header class="bg-white shadow-md sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold gradient-text">Interactive CV</div>
-            <nav>
-                <a href="#features" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Features</a>
-                <a href="#tech" class="text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md font-medium transition duration-150">Technology</a>
+            <nav class="flex items-center gap-2 sm:gap-6">
+                <a href="index.html" class="nav-link active text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Home</a>
+                <a href="blog.html" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150">Blog</a>
+                <a href="cv.html" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition duration-150">CV</a>
             </nav>
         </div>
     </header>
@@ -107,6 +136,9 @@
                 </a>
                 <a href="https://github.com/jmuconto/resume" target="_blank" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow-md hover:bg-gray-300 hover:shadow-lg transition duration-300">
                     GitHub Project
+                </a>
+                <a href="blog.html" class="bg-white text-gray-800 font-bold py-3 px-8 rounded-full text-lg shadow-md hover:shadow-lg transition duration-300 border border-gray-200 hover:border-indigo-300">
+                    📝 Read the Blog
                 </a>
             </div>
         </div>
@@ -217,9 +249,10 @@
         <p class="text-sm">&copy; <span id="currentYear"></span> Interactive CV.</p>
         <p class="text-xs mt-1 text-gray-500">Built by João Muconto</p>
         <div class="mt-4 flex justify-center gap-6 text-xs">
-            <a href="cv.html" class="text-gray-400 hover:text-white transition">View CV</a>
+            <a href="index.html" class="text-gray-400 hover:text-white transition">Home</a>
+            <a href="blog.html" class="text-gray-400 hover:text-white transition">Blog</a>
+            <a href="cv.html" class="text-gray-400 hover:text-white transition">CV</a>
             <a href="https://github.com/jmuconto/resume" target="_blank" class="text-gray-400 hover:text-white transition">GitHub</a>
-            <a href="https://jmuconto.medium.com" target="_blank" class="text-gray-400 hover:text-white transition">Medium</a>
         </div>
     </footer>
 
@@ -262,5 +295,6 @@
             console.log('🚀 Performance: No build process, minimal dependencies');
         });
     </script>
+
 </body>
 </html>

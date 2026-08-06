@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - Engenheiro de Soluções</title>
+    <title>João Domingos Matola Muconto - CV</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
@@ -22,7 +22,7 @@
             font-size: 14px;
             min-height: 100vh;
         }
-        
+
         .container {
             max-width: 8.5in;
             margin: 0 auto;
@@ -36,7 +36,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .container::before {
             content: '';
             position: absolute;
@@ -46,7 +46,7 @@
             height: 4px;
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 1.5rem;
@@ -55,26 +55,33 @@
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
         }
-        
+
         .name {
             font-size: 28px;
             font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             letter-spacing: 1px;
             background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
+        .subtitle {
+            font-size: 16px;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
         .title {
             font-size: 16px;
             color: #666;
             font-weight: 500;
             margin-bottom: 0.75rem;
         }
-        
+
         .contact-info {
             font-size: 13px;
             color: #555;
@@ -83,7 +90,7 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-        
+
         .contact-item {
             display: flex;
             align-items: center;
@@ -91,7 +98,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .contact-item:hover {
             transform: translateY(-2px);
             color: #667eea;
@@ -102,20 +109,20 @@
             border-radius: 4px;
             padding-left: 0.5rem;
         }
-        
+
         .section {
             margin-bottom: 1.25rem;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
         }
-        
+
         .section:nth-child(2) { animation-delay: 0.1s; }
         .section:nth-child(3) { animation-delay: 0.2s; }
         .section:nth-child(4) { animation-delay: 0.3s; }
         .section:nth-child(5) { animation-delay: 0.4s; }
         .section:nth-child(6) { animation-delay: 0.5s; }
         .section:nth-child(7) { animation-delay: 0.6s; }
-        
+
         .section-title {
             font-size: 16px;
             font-weight: 600;
@@ -129,12 +136,12 @@
             transition: all 0.3s ease;
             position: relative;
         }
-        
+
         .section-title:hover {
             color: #667eea;
             border-bottom-color: #667eea;
         }
-        
+
         .section-title::after {
             content: '▼';
             position: absolute;
@@ -144,17 +151,17 @@
             opacity: 0.5;
             transition: transform 0.3s ease;
         }
-        
+
         .section-content {
             transition: all 0.3s ease;
         }
-        
+
         .section-content.collapsed {
             max-height: 0;
             overflow: hidden;
             opacity: 0;
         }
-        
+
         .section-content.collapsed + .section-title::after {
             transform: rotate(-90deg);
         }
@@ -162,13 +169,13 @@
         .section-content.collapsed + .section-title {
             border-bottom-color: transparent;
         }
-        
+
         .summary {
             text-align: justify;
             color: #444;
             line-height: 1.7;
         }
-        
+
         .experience-item, .project-item {
             margin-bottom: 1rem;
             padding: 1rem;
@@ -177,36 +184,36 @@
             cursor: pointer;
             border-left: 3px solid transparent;
         }
-        
+
         .experience-item:hover, .project-item:hover {
             background: #f8f9fa;
             border-left-color: #667eea;
             transform: translateX(5px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        
+
         .job-header {
             margin-bottom: 0.5rem;
         }
-        
+
         .company {
             font-weight: 600;
             color: #1a1a1a;
             font-size: 15px;
         }
-        
+
         .job-title {
             font-weight: 500;
             color: #333;
             margin-bottom: 0.25rem;
         }
-        
+
         .duration {
             font-size: 13px;
             color: #666;
             font-style: italic;
         }
-        
+
         .job-description {
             margin-left: 1rem;
             max-height: 0;
@@ -214,27 +221,27 @@
             transition: all 0.3s ease;
             opacity: 0;
         }
-        
+
         .experience-item.expanded .job-description,
         .project-item.expanded .project-description {
             max-height: 800px;
             opacity: 1;
             margin-top: 0.5rem;
         }
-        
+
         .job-description ul, .project-description ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
-        
+
         .job-description li, .project-description li {
             margin-bottom: 0.4rem;
             position: relative;
             padding-left: 1rem;
             color: #444;
         }
-        
+
         .job-description li:before, .project-description li:before {
             content: "●";
             color: #667eea;
@@ -242,14 +249,14 @@
             left: 0;
             font-weight: bold;
         }
-        
+
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-        
+
         .project-item {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 0.75rem;
@@ -258,54 +265,54 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .project-title {
             font-weight: 600;
             color: #1a1a1a;
             font-size: 13px;
             margin-bottom: 0.25rem;
         }
-        
+
         .project-tech {
             font-size: 11px;
             color: #667eea;
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-        
+
         .skills-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 0.75rem;
         }
-        
+
         .skill-category {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             padding: 0.75rem;
             border-radius: 8px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .skill-category:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
-        
+
         .skill-title {
             font-weight: 600;
             color: #333;
             font-size: 13px;
             margin-bottom: 0.25rem;
         }
-        
+
         .skill-list {
             color: #555;
             font-size: 12px;
             line-height: 1.5;
         }
-        
+
         .education-item {
             margin-bottom: 0.75rem;
             padding: 0.75rem;
@@ -314,28 +321,28 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .education-item:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
-        
+
         .degree {
             font-weight: 600;
             color: #1a1a1a;
         }
-        
+
         .institution {
             color: #666;
             font-size: 13px;
         }
-        
+
         .certification-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0.5rem;
         }
-        
+
         .certification-item {
             font-size: 12px;
             color: #444;
@@ -345,13 +352,13 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .certification-item:hover {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             transform: scale(1.02);
         }
-        
+
         .print-btn {
             position: fixed;
             top: 20px;
@@ -366,7 +373,7 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
             z-index: 1000;
         }
-        
+
         .language-toggle {
             position: fixed;
             top: 20px;
@@ -380,7 +387,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
-        
+
         .lang-btn {
             background: none;
             border: none;
@@ -392,17 +399,17 @@
             border-radius: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .lang-btn.active {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
         }
-        
+
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         @media print {
             body { print-color-adjust: exact; background: white; }
             .container { box-shadow: none; margin: 0; padding: 0.5in; border-radius: 0; }
@@ -413,31 +420,30 @@
 </head>
 <body>
     <button class="print-btn" onclick="window.print()" title="Imprimir CV">🖨️</button>
-    
+
     <div class="language-toggle">
         <button class="lang-btn active" onclick="toggleLanguage('pt')">PT</button>
         <span style="margin: 0 0.5rem; color: #ddd;">|</span>
         <button class="lang-btn" onclick="toggleLanguage('en')">EN</button>
     </div>
-    
+
     <div class="container">
         <div class="header">
             <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
-            <div class="title">ENGENHEIRO DE SOLUÇÕES</div>
+            <div class="subtitle">Application Support Engineer | Data Analyst | Programmer</div>
             <div class="contact-info">
                 <div class="contact-item" data-copy="+258850452814">📞 +258 850 452 814</div>
-                <div class="contact-item">📍 MAPUTO, MOÇAMBIQUE (REMOTO – UTC+2)</div>
+                <div class="contact-item">📍 MAPUTO, MOÇAMBIQUE</div>
                 <div class="contact-item" data-copy="j.muconto@gmail.com">✉️ J.MUCONTO@GMAIL.COM</div>
                 <div class="contact-item">🔗 github.com/jmuconto</div>
-                <div class="contact-item">✍️ <a href="https://jmuconto.medium.com" target="_blank" style="text-decoration: none; color: inherit;">jmuconto.medium.com</a></div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Resumo</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Perfil Profissional</h2>
             <div class="section-content">
                 <div class="summary">
-                    <strong>Engenheiro de Soluções</strong> com vasta experiência em sistemas bancários e empresariais, especializado em <strong>gestão de incidentes</strong>, integração de sistemas, automação e entrega controlada de alterações. Perito em transformar requisitos de negócio complexos em soluções técnicas escaláveis, mantendo altos padrões de segurança e eficiência operacional.
+                    Profissional de TI com experiência em <strong>suporte aplicacional</strong>, <strong>análise de dados</strong>, desenvolvimento de software e operações de produção em ambientes bancários e empresariais. Experiência em gestão de incidentes, automação de processos, integração de sistemas, análise de dados e desenvolvimento backend utilizando <strong>Python, C#, SQL e APIs REST</strong>. Orientado para a melhoria contínua, fiabilidade operacional e suporte à tomada de decisão através de dados.
                 </div>
             </div>
         </div>
@@ -445,65 +451,68 @@
         <div class="section">
             <h2 class="section-title" onclick="toggleSection(this)">Experiência Profissional</h2>
             <div class="section-content">
-                
+
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">MARRAR, LDA (ABSA Bank)</div>
-                        <div class="job-title">Analista de Sistemas</div>
+                        <div class="company">MARRAR, LDA – Programador / Analista de Sistemas</div>
+                        <div class="job-title">Subcontratado no ABSA Moçambique</div>
                         <div class="duration">Setembro 2024 – Presente</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Suporte a sistemas bancários de missão crítica garantindo disponibilidade 24/7.</li>
-                            <li>Gestão de mais de <strong>549 incidentes em produção</strong> (L2/L3) com Análise de Causa Raiz (RCA).</li>
-                            <li>Implementação de mudanças e deploys controlados seguindo rigorosos protocolos bancários.</li>
-                            <li>Suporte a APIs, integrações complexas, sistemas de autenticação e jobs em lote (batch).</li>
-                            <li>Desenvolvimento de scripts de <strong>automação em Python e C#</strong>, reduzindo a carga manual em <strong>35%</strong>.</li>
+                            <li>Suporte L2/L3 a aplicações bancárias críticas.</li>
+                            <li>Gestão de incidentes, problemas e mudanças em ambiente de produção.</li>
+                            <li>Desenvolvimento de ferramentas de automação e reporting utilizando Python e C#.</li>
+                            <li>Análise de dados operacionais para identificação de tendências e melhoria contínua.</li>
+                            <li>Produção de relatórios operacionais e apoio à monitoria de indicadores.</li>
+                            <li>Suporte a bases de dados SQL Server e Oracle.</li>
+                            <li>Diagnóstico de integrações, APIs REST, autenticação e processos batch.</li>
+                            <li>Colaboração com equipas de desenvolvimento, infraestrutura e negócio.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">FOSS LABS SERVICE</div>
-                        <div class="job-title">Engenheiro de Soluções / Engenheiro de Sistemas</div>
+                        <div class="company">FOSS LABS SERVICE – Fundador | Programador | Suporte Técnico</div>
                         <div class="duration">Setembro 2023 – Setembro 2024</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Entrega de soluções ERP utilizando plataformas de código aberto adaptadas às necessidades dos clientes.</li>
-                            <li>Desenho de soluções técnicas e configurações baseadas nos requisitos de negócio.</li>
-                            <li>Construção de integrações robustas via <strong>APIs REST</strong> e automação de processos.</li>
-                            <li>Desenho e execução de serviços de avaliação de cibersegurança e testes de intrusão.</li>
-                            <li>Realização de avaliações de segurança e suporte crítico na remediação de vulnerabilidades.</li>
+                            <li>Desenvolvimento e personalização de soluções ERP baseadas em tecnologias Open Source.</li>
+                            <li>Implementação de integrações entre sistemas utilizando APIs REST.</li>
+                            <li>Desenvolvimento de automações para processos operacionais e geração de relatórios.</li>
+                            <li>Administração de bases de dados MySQL e suporte técnico aos clientes.</li>
+                            <li>Implementação de melhorias de segurança e avaliações de cibersegurança.</li>
+                            <li>Desenvolvimento e manutenção de aplicações internas utilizando Python, Django, web2py, SQLAlchemy e Odoo.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">WORLD MESSIANIC CHURCH</div>
-                        <div class="job-title">Missionário</div>
+                        <div class="company">IGREJA MESSIÂNICA MUNDIAL – Missionário</div>
                         <div class="duration">2016 – 2023</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Desenvolvimento de sistemas internos de gestão utilizando <strong>Python, Django, Odoo e MySQL</strong>.</li>
-                            <li>Coordenação de operações humanitárias e organizacionais em múltiplas regiões internacionais.</li>
+                            <li>Digitalização de processos administrativos e automatização de tarefas.</li>
+                            <li>Desenvolvimento de relatórios e apoio à gestão de informação.</li>
+                            <li>Administração de bases de dados MySQL e suporte às aplicações internas.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
-                        <div class="company">DELIMITE, LDA</div>
-                        <div class="job-title">Programador Web</div>
+                        <div class="company">DELIMITE, LDA – Programador Web</div>
                         <div class="duration">2014 – 2015</div>
                     </div>
                     <div class="job-description">
                         <ul>
-                            <li>Desenvolvimento de aplicações CMS utilizando WordPress e Joomla.</li>
-                            <li>Lógica de backend, otimização de performance e endurecimento (hardening) básico de segurança.</li>
+                            <li>Desenvolvimento de aplicações Web utilizando WordPress, Joomla e PHP.</li>
+                            <li>Desenvolvimento de funcionalidades backend e integração com bases de dados.</li>
+                            <li>Optimização de desempenho e implementação de boas práticas de segurança.</li>
                         </ul>
                     </div>
                 </div>
@@ -516,67 +525,67 @@
             <div class="section-content">
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <div class="skill-title">Ops & Gestão:</div>
-                        <div class="skill-list">Gestão de Incidentes (L2/L3), RCA, Gestão de Mudança e Release</div>
+                        <div class="skill-title">Suporte Aplicacional</div>
+                        <div class="skill-list">Suporte L2/L3, Gestão de Incidentes, Gestão de Problemas, Gestão de Mudanças, RCA, Monitoria, SLA</div>
                     </div>
                     <div class="skill-category">
-                        <div class="skill-title">Backend:</div>
-                        <div class="skill-list">Python, FastAPI, Django, APIs REST, C#, .NET, PHP, Go</div>
+                        <div class="skill-title">Análise de Dados</div>
+                        <div class="skill-list">SQL, Reporting, BI, Validação de Dados, Dashboards, Power BI, Excel Avançado, Streamlit/Pandas</div>
                     </div>
                     <div class="skill-category">
-                        <div class="skill-title">Bases de Dados:</div>
-                        <div class="skill-list">SQL Server, Oracle, PostgreSQL, MySQL</div>
+                        <div class="skill-title">Programação</div>
+                        <div class="skill-list">Python, C#, PHP, Go, SQL, Ruby</div>
                     </div>
                     <div class="skill-category">
-                        <div class="skill-title">Automação & Cloud:</div>
-                        <div class="skill-list">n8n, Zapier, UIPath, Linux, Docker, AWS basics, CI/CD, Nginx</div>
+                        <div class="skill-title">Backend & Integração</div>
+                        <div class="skill-list">FastAPI, Django, Ruby on Rails, Hanami, Flask, Laravel, ASP.NET, REST APIs, Postman</div>
                     </div>
                     <div class="skill-category">
-                        <div class="skill-title">Segurança:</div>
-                        <div class="skill-list">Coding Seguro, Testes de Aplicações Web, Penetration Testing</div>
+                        <div class="skill-title">Bases de Dados</div>
+                        <div class="skill-list">SQL Server, Oracle, PostgreSQL, MySQL, SQLite, MongoDB</div>
                     </div>
                     <div class="skill-category">
-                        <div class="skill-title">Comunicação:</div>
-                        <div class="skill-list">Escrita Técnica, Liderança, Comunicação Intercultural</div>
+                        <div class="skill-title">Automação & IA</div>
+                        <div class="skill-list">Python Automation, n8n, Zapier, UIPath, Automation Anywhere, Ollama LLM, Botpress</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Infraestrutura</div>
+                        <div class="skill-list">Linux, Windows Server, Docker, Git, GitHub Actions, GitLab CI/CD, Nginx, AWS Fundamentals</div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-title">Cibersegurança</div>
+                        <div class="skill-list">Secure Coding, Nmap, Wireshark</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Projetos & Escrita</h2>
-            <div class="section-content">
-                <div class="projects-grid">
-                    <div class="project-item" onclick="toggleProjectDetails(this)">
-                        <div class="project-title">CV Online Interativo</div>
-                        <div class="project-tech">HTMX, JavaScript, CSS</div>
-                        <div class="project-description">
-                            <ul><li>Alojado em: jmuconto.github.io/resume</li><li>Funcionalidades de navegação dinâmica e motor de impressão otimizado.</li></ul>
-                        </div>
-                    </div>
-                    <div class="project-item" onclick="toggleProjectDetails(this)">
-                        <div class="project-title">Escrita Técnica (Medium)</div>
-                        <div class="project-tech">Estratégia de Conteúdo, Educação Tech</div>
-                        <div class="project-description">
-                            <ul><li>Mais de <strong>100 artigos</strong> publicados.</li><li>Média de <strong>~300 leitores mensais</strong> sobre engenharia de software.</li></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title" onclick="toggleSection(this)">Educação & Certificações</h2>
+            <h2 class="section-title" onclick="toggleSection(this)">Formação Académica</h2>
             <div class="section-content">
                 <div class="education-item">
-                    <div class="degree">Licenciatura em Gestão de Informação</div>
-                    <div class="institution">Universidade Politécnica (Maputo)</div>
+                    <div class="degree">Licenciatura em Informática de Gestão</div>
+                    <div class="institution">Universidade Politécnica – Maputo</div>
                 </div>
+                <div class="education-item">
+                    <div class="degree">Bacharelado em Teologia</div>
+                    <div class="institution">Faculdade Messiânica – São Paulo</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title" onclick="toggleSection(this)">Certificações</h2>
+            <div class="section-content">
                 <div class="certification-list">
-                    <div class="certification-item">● Cisco: Cibersegurança & Ethical Hacking</div>
-                    <div class="certification-item">● Microsoft: Fundamentos de C#</div>
-                    <div class="certification-item">● Automation Anywhere: RPA</div>
-                    <div class="certification-item">● UniAthena: Masterclass em Python</div>
+                    <div class="certification-item">IBM – Business Intelligence</div>
+                    <div class="certification-item">IBM – Generative AI</div>
+                    <div class="certification-item">Cisco – Cybersecurity</div>
+                    <div class="certification-item">Cisco – Ethical Hacking</div>
+                    <div class="certification-item">Cisco – Endpoint Security</div>
+                    <div class="certification-item">Microsoft – C# Fundamentals</div>
+                    <div class="certification-item">Automation Anywhere – RPA</div>
+                    <div class="certification-item">UniAthena – Python Masterclass</div>
                 </div>
             </div>
         </div>
@@ -607,25 +616,27 @@
             content.classList.toggle('collapsed');
             element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
         }
-        
+
         function toggleExperienceDetails(element) {
             element.classList.toggle('expanded');
         }
-        
+
         function toggleProjectDetails(element) {
             element.classList.toggle('expanded');
         }
-        
+
         function toggleLanguage(lang) {
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => btn.classList.remove('active'));
             if (lang === 'en') {
-                window.location.href = 'cv.html'; // Assume que o ficheiro anterior se chama cv.html
+                // Para versão em inglês, redirecione para o arquivo correspondente
+                // window.location.href = 'cv_en.html';
+                alert('Versão em inglês em breve!');
             } else {
                 document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
             }
         }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
                 item.addEventListener('click', function() {
@@ -633,8 +644,9 @@
                 });
             });
 
+            // Inicializa todas as seções como colapsadas, exceto o Perfil
             document.querySelectorAll('.section-content').forEach(content => {
-                if (!content.previousElementSibling.textContent.includes('Resumo')) {
+                if (!content.previousElementSibling.textContent.includes('Perfil')) {
                     content.classList.add('collapsed');
                     content.previousElementSibling.classList.add('collapsed-title');
                 }

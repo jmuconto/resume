@@ -1,1 +1,15 @@
 
+[
+  {
+    "title": "How I Built an Interactive CV in One Weekend Using HTMX (and Made It Open Source)",
+    "date": "2025-08-16",
+    "tags": ["web-development", "htmx", "javascript"],
+    "body": "## Introduction\n\nThis project is an interactive, print-optimized CV..."
+  },
+  {
+    "title": "Secure Testimonials Without a Database",
+    "date": "2024-12-10",
+    "tags": ["security", "javascript", "performance"],
+    "body": "## Introduction\n\nAdding testimonials to your website..."
+  }
+]

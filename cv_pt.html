@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - CV</title>
+    <title>João Domingos Matola Muconto - Engenheiro de Soluções</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
@@ -22,7 +22,7 @@
             font-size: 14px;
             min-height: 100vh;
         }
-
+        
         .container {
             max-width: 8.5in;
             margin: 0 auto;
@@ -36,7 +36,7 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .container::before {
             content: '';
             position: absolute;
@@ -46,7 +46,7 @@
             height: 4px;
             background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         }
-
+        
         .header {
             text-align: center;
             margin-bottom: 1.5rem;
@@ -55,33 +55,26 @@
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
         }
-
+        
         .name {
             font-size: 28px;
             font-weight: 700;
             color: #1a1a1a;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
             letter-spacing: 1px;
             background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .subtitle {
-            font-size: 16px;
-            color: #555;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
+        
         .title {
             font-size: 16px;
             color: #666;
             font-weight: 500;
             margin-bottom: 0.75rem;
         }
-
+        
         .contact-info {
             font-size: 13px;
             color: #555;
@@ -90,7 +83,7 @@
             flex-wrap: wrap;
             gap: 1rem;
         }
-
+        
         .contact-item {
             display: flex;
             align-items: center;
@@ -98,7 +91,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
+        
         .contact-item:hover {
             transform: translateY(-2px);
             color: #667eea;
@@ -109,20 +102,20 @@
             border-radius: 4px;
             padding-left: 0.5rem;
         }
-
+        
         .section {
             margin-bottom: 1.25rem;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
         }
-
+        
         .section:nth-child(2) { animation-delay: 0.1s; }
         .section:nth-child(3) { animation-delay: 0.2s; }
         .section:nth-child(4) { animation-delay: 0.3s; }
         .section:nth-child(5) { animation-delay: 0.4s; }
         .section:nth-child(6) { animation-delay: 0.5s; }
         .section:nth-child(7) { animation-delay: 0.6s; }
-
+        
         .section-title {
             font-size: 16px;
             font-weight: 600;
@@ -136,12 +129,12 @@
             transition: all 0.3s ease;
             position: relative;
         }
-
+        
         .section-title:hover {
             color: #667eea;
             border-bottom-color: #667eea;
         }
-
+        
         .section-title::after {
             content: '▼';
             position: absolute;
@@ -151,17 +144,17 @@
             opacity: 0.5;
             transition: transform 0.3s ease;
         }
-
+        
         .section-content {
             transition: all 0.3s ease;
         }
-
+        
         .section-content.collapsed {
             max-height: 0;
             overflow: hidden;
             opacity: 0;
         }
-
+        
         .section-content.collapsed + .section-title::after {
             transform: rotate(-90deg);
         }
@@ -169,13 +162,13 @@
         .section-content.collapsed + .section-title {
             border-bottom-color: transparent;
         }
-
+        
         .summary {
             text-align: justify;
             color: #444;
             line-height: 1.7;
         }
-
+        
         .experience-item, .project-item {
             margin-bottom: 1rem;
             padding: 1rem;
@@ -184,36 +177,36 @@
             cursor: pointer;
             border-left: 3px solid transparent;
         }
-
+        
         .experience-item:hover, .project-item:hover {
             background: #f8f9fa;
             border-left-color: #667eea;
             transform: translateX(5px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
+        
         .job-header {
             margin-bottom: 0.5rem;
         }
-
+        
         .company {
             font-weight: 600;
             color: #1a1a1a;
             font-size: 15px;
         }
-
+        
         .job-title {
             font-weight: 500;
             color: #333;
             margin-bottom: 0.25rem;
         }
-
+        
         .duration {
             font-size: 13px;
             color: #666;
             font-style: italic;
         }
-
+        
         .job-description {
             margin-left: 1rem;
             max-height: 0;
@@ -221,27 +214,27 @@
             transition: all 0.3s ease;
             opacity: 0;
         }
-
+        
         .experience-item.expanded .job-description,
         .project-item.expanded .project-description {
             max-height: 800px;
             opacity: 1;
             margin-top: 0.5rem;
         }
-
+        
         .job-description ul, .project-description ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
-
+        
         .job-description li, .project-description li {
             margin-bottom: 0.4rem;
             position: relative;
             padding-left: 1rem;
             color: #444;
         }
-
+        
         .job-description li:before, .project-description li:before {
             content: "●";
             color: #667eea;
@@ -249,14 +242,14 @@
             left: 0;
             font-weight: bold;
         }
-
+        
         .projects-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-
+        
         .project-item {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 0.75rem;
@@ -265,54 +258,54 @@
             position: relative;
             overflow: hidden;
         }
-
+        
         .project-title {
             font-weight: 600;
             color: #1a1a1a;
             font-size: 13px;
             margin-bottom: 0.25rem;
         }
-
+        
         .project-tech {
             font-size: 11px;
             color: #667eea;
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-
+        
         .skills-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            gap: 1rem;
         }
-
+        
         .skill-category {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             padding: 0.75rem;
             border-radius: 8px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
+        
         .skill-category:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
-
+        
         .skill-title {
             font-weight: 600;
             color: #333;
             font-size: 13px;
             margin-bottom: 0.25rem;
         }
-
+        
         .skill-list {
             color: #555;
             font-size: 12px;
             line-height: 1.5;
         }
-
+        
         .education-item {
             margin-bottom: 0.75rem;
             padding: 0.75rem;
@@ -321,28 +314,28 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
+        
         .education-item:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
-
+        
         .degree {
             font-weight: 600;
             color: #1a1a1a;
         }
-
+        
         .institution {
             color: #666;
             font-size: 13px;
         }
-
+        
         .certification-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0.5rem;
         }
-
+        
         .certification-item {
             font-size: 12px;
             color: #444;
@@ -352,13 +345,13 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-
+        
         .certification-item:hover {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             transform: scale(1.02);
         }
-
+        
         .print-btn {
             position: fixed;
             top: 20px;
@@ -372,8 +365,14 @@
             font-size: 18px;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
             z-index: 1000;
+            transition: all 0.3s ease;
         }
-
+        
+        .print-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
         .language-toggle {
             position: fixed;
             top: 20px;
@@ -387,7 +386,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
-
+        
         .lang-btn {
             background: none;
             border: none;
@@ -399,38 +398,51 @@
             border-radius: 15px;
             transition: all 0.3s ease;
         }
-
+        
         .lang-btn.active {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
         }
-
+        
+        .lang-btn:hover:not(.active) {
+            color: #667eea;
+        }
+        
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         @media print {
             body { print-color-adjust: exact; background: white; }
             .container { box-shadow: none; margin: 0; padding: 0.5in; border-radius: 0; }
             .print-btn, .language-toggle { display: none; }
             .section-content, .job-description, .project-description { max-height: none !important; opacity: 1 !important; }
         }
+
+        @media (max-width: 768px) {
+            .container { padding: 0.3in; margin-top: 1rem; margin-bottom: 1rem; }
+            .name { font-size: 22px; }
+            .contact-info { font-size: 11px; gap: 0.5rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .certification-list { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <button class="print-btn" onclick="window.print()" title="Imprimir CV">🖨️</button>
-
+    
     <div class="language-toggle">
         <button class="lang-btn active" onclick="toggleLanguage('pt')">PT</button>
         <span style="margin: 0 0.5rem; color: #ddd;">|</span>
         <button class="lang-btn" onclick="toggleLanguage('en')">EN</button>
     </div>
-
+    
     <div class="container">
         <div class="header">
             <h1 class="name">JOÃO DOMINGOS MATOLA MUCONTO</h1>
-            <div class="subtitle">Application Support Engineer | Data Analyst | Programmer</div>
+            <div class="title">Application Support Engineer | Data Analyst | Programmer</div>
             <div class="contact-info">
                 <div class="contact-item" data-copy="+258850452814">📞 +258 850 452 814</div>
                 <div class="contact-item">📍 MAPUTO, MOÇAMBIQUE</div>
@@ -451,7 +463,7 @@
         <div class="section">
             <h2 class="section-title" onclick="toggleSection(this)">Experiência Profissional</h2>
             <div class="section-content">
-
+                
                 <div class="experience-item" onclick="toggleExperienceDetails(this)">
                     <div class="job-header">
                         <div class="company">MARRAR, LDA – Programador / Analista de Sistemas</div>
@@ -616,27 +628,28 @@
             content.classList.toggle('collapsed');
             element.classList.toggle('collapsed-title', content.classList.contains('collapsed'));
         }
-
+        
         function toggleExperienceDetails(element) {
             element.classList.toggle('expanded');
         }
-
+        
         function toggleProjectDetails(element) {
             element.classList.toggle('expanded');
         }
-
+        
         function toggleLanguage(lang) {
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => btn.classList.remove('active'));
+            
             if (lang === 'en') {
-                // Para versão em inglês, redirecione para o arquivo correspondente
-                // window.location.href = 'cv_en.html';
-                alert('Versão em inglês em breve!');
+                // Redirect to the English version (cv.html)
+                window.location.href = 'cv.html';
             } else {
+                // Stay on Portuguese version
                 document.querySelector('.lang-btn[onclick="toggleLanguage(\'pt\')"]').classList.add('active');
             }
         }
-
+        
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
                 item.addEventListener('click', function() {
@@ -644,7 +657,7 @@
                 });
             });
 
-            // Inicializa todas as seções como colapsadas, exceto o Perfil
+            // Initialize all sections as collapsed except Profile
             document.querySelectorAll('.section-content').forEach(content => {
                 if (!content.previousElementSibling.textContent.includes('Perfil')) {
                     content.classList.add('collapsed');

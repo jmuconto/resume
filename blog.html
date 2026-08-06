@@ -135,6 +135,18 @@
             margin: 1.5rem 0;
         }
 
+        .article-content .article-meta {
+            color: #6b7280;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content .article-meta span {
+            margin-right: 1.5rem;
+        }
+
         .skeleton {
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
@@ -166,6 +178,17 @@
 
         .home-link:hover {
             transform: translateX(-2px);
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
         @media (max-width: 768px) {
@@ -444,12 +467,14 @@
             html = html.replace(/<p>(\s*)<h/g, '<h');
             html = html.replace(/<\/h(\d)><\/p>/g, '</h$1>');
 
+            // Build full article HTML
             articleContent.innerHTML = `
                 <div class="mb-8">
                     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">${article.title}</h1>
-                    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                        ${article.date ? `<span>${formatDate(parseDate(article.date))}</span>` : ''}
-                        <span>${article.readingTime || Math.max(1, Math.round(article.body.split(/\s+/).length / 200))} min read</span>
+                    <div class="article-meta flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                        ${article.author ? `<span>✍️ ${article.author}</span>` : ''}
+                        ${article.date ? `<span>📅 ${formatDate(parseDate(article.date))}</span>` : ''}
+                        <span>⏱️ ${article.readingTime || Math.max(1, Math.round(article.body.split(/\s+/).length / 200))} min read</span>
                     </div>
                     ${article.tags && article.tags.length > 0 ? `
                         <div class="flex flex-wrap gap-2 mt-4">
@@ -464,6 +489,16 @@
                 <div>
                     ${html}
                 </div>
+                ${article.links && article.links.length > 0 ? `
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-sm font-semibold text-gray-600 mb-3">🔗 Links</h3>
+                        <ul class="space-y-2">
+                            ${article.links.map(link => `
+                                <li><a href="${link.url}" target="_blank" class="text-indigo-600 hover:underline">${link.label}</a></li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
             `;
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -485,8 +520,6 @@
             }
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Reload articles to ensure fresh view
             loadArticles();
         }
 
@@ -525,7 +558,6 @@
             }
 
             try {
-                // Try to load from individual file
                 const response = await fetch(`${BLOG_CONFIG.articlesPath}${slug}.json`);
                 if (response.ok) {
                     const data = await response.json();
@@ -534,7 +566,6 @@
                     return;
                 }
 
-                // If not found, try to find in index
                 const articles = getCachedArticles() || [];
                 const article = articles.find(a => slugify(a.title) === slug);
                 if (article) {
@@ -592,7 +623,6 @@
                 }
             });
 
-            // Security: Block eval
             window.eval = function() {
                 console.warn('⚠️ eval() blocked for security');
                 return null;

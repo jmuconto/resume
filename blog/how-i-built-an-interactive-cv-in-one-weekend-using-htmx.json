@@ -1,0 +1,18 @@
+{
+  "title": "How I Built an Interactive CV in One Weekend Using HTMX (and Made It Open Source)",
+  "author": "John Muconto",
+  "date": "2025-08-16",
+  "tags": ["htmx", "web-development", "javascript", "opensource", "cv"],
+  "readingTime": 3,
+  "body": "Updating a CV is rarely anyone's favourite weekend activity — but for me, it turned into an unexpectedly fun coding challenge.\n\nWhat started as a quick refresh of my résumé became an open-source interactive CV project powered by HTMX, complete with dynamic sections, a clean responsive layout, and a roadmap full of exciting features.\n\nYou can view it live here: [jmuconto.github.io/resume](https://jmuconto.github.io/resume)\nAnd grab the source code here: [github.com/jmuconto/resume](https://github.com/jmuconto/resume)\n\n## Why Build an Interactive CV?\n\nMost CVs are static PDFs — functional but not exactly exciting. I wanted mine to feel alive, easy to navigate, and capable of growing with my career.\n\nI also wanted something:\n\n- Lightweight and fast — no heavy JavaScript frameworks.\n- Simple to maintain — content first, design second.\n- Developer-friendly — so others could fork and customise it.\n\nThat's where HTMX came in. It lets you add interactivity using only HTML attributes, keeping the complexity low but the user experience high.\n\n## Weekend Build: Features in the First Version\n\nThe first release came together in just a weekend. It includes:\n\n- Collapsible sections for experience, skills, and projects.\n- Responsive design that works on desktop and mobile.\n- Clean typography for better readability.\n- A modular structure so adding content is painless.\n\n## Planned Features for the Future\n\nThis is just the start — the next versions will include:\n\n- 🌍 Multilingual support — switch CV language instantly.\n- 🔍 Search & filtering — find specific roles, skills, or achievements.\n- 🎨 Themes — light, dark, and custom styles.\n- 🧩 Full modularity — plug in your own data easily.\n\n## Why Open Source?\n\nBy open-sourcing the project, I hope it becomes a reusable CV framework for other developers, designers, and creatives.\n\nWhether you want to learn HTMX, showcase your skills, or just ditch the boring PDF, you can take the base and make it your own.\n\n## Key Takeaways\n\n- HTMX is perfect for adding interactivity without heavy JavaScript.\n- Even a 'small' side project can become a valuable portfolio piece.\n- Making your CV interactive encourages you to keep it updated.",
+  "links": [
+    {
+      "label": "View Live CV",
+      "url": "https://jmuconto.github.io/resume"
+    },
+    {
+      "label": "GitHub Repository",
+      "url": "https://github.com/jmuconto/resume"
+    }
+  ]
+}

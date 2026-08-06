@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Domingos Matola Muconto - Engenheiro de Soluções</title>
+    <title>João Domingos Matola Muconto - Application Support Engineer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.10/htmx.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -379,7 +379,7 @@
             left: 20px;
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 25px;
             padding: 0.5rem 1rem;
@@ -394,7 +394,7 @@
             font-weight: 600;
             color: #666;
             cursor: pointer;
-            padding: 0.5rem;
+            padding: 0.5rem 0.75rem;
             border-radius: 15px;
             transition: all 0.3s ease;
         }
@@ -406,6 +406,7 @@
         
         .lang-btn:hover:not(.active) {
             color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
         }
         
         @keyframes fadeInUp {
@@ -427,6 +428,8 @@
             .projects-grid { grid-template-columns: 1fr; }
             .skills-grid { grid-template-columns: 1fr; }
             .certification-list { grid-template-columns: 1fr; }
+            .language-toggle { top: 10px; left: 10px; padding: 0.3rem 0.6rem; }
+            .lang-btn { font-size: 12px; padding: 0.3rem 0.5rem; }
         }
     </style>
 </head>
@@ -638,6 +641,7 @@
         }
         
         function toggleLanguage(lang) {
+            // Remove active class from all buttons
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => btn.classList.remove('active'));
             
@@ -651,6 +655,7 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
+            // Copy to clipboard functionality
             document.querySelectorAll('.contact-item[data-copy]').forEach(item => {
                 item.addEventListener('click', function() {
                     copyToClipboard(this.getAttribute('data-copy'), this);
@@ -659,9 +664,10 @@
 
             // Initialize all sections as collapsed except Profile
             document.querySelectorAll('.section-content').forEach(content => {
-                if (!content.previousElementSibling.textContent.includes('Perfil')) {
+                const sectionTitle = content.previousElementSibling;
+                if (sectionTitle && !sectionTitle.textContent.includes('Perfil')) {
                     content.classList.add('collapsed');
-                    content.previousElementSibling.classList.add('collapsed-title');
+                    sectionTitle.classList.add('collapsed-title');
                 }
             });
         });
